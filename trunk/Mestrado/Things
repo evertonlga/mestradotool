@@ -1,0 +1,10 @@
+- É necessário que o modelo tenha um comentário escrito somente 'start'
+- Modifiquei a metaclasse do estereotipo "SUT RT" para também ser aplicado a classes. Necessário
+pra identificar na arquitetura a classe que foi gerada para extender o SUT original e adicionar
+novos elementos ao mesmo.
+- Uma associação entre cada teste component e a classe que estende o SUT
+
+
+
+Dúvidas:
+	- Os testComponents devem ser uma generalização das classes originais??

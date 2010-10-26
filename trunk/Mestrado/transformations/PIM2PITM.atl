@@ -1,0 +1,280 @@
+module PIM2PITM;
+
+create OUT : UML2 from IN : UML2, ProfileRTD : UML2, ProfileUTP_RT: UML2;
+
+helper def : DataModel : UML2!Model = '';
+
+helper def : booleanType : UML2!PrimitiveType = '';
+
+helper def : StringType : UML2!PrimitiveType = '';
+
+helper def : IntegerType : UML2!PrimitiveType = '';
+
+helper def : floatType : UML2!PrimitiveType = '';
+
+helper def : CollectionType : UML2!PrimitiveType = '';
+
+helper def : SUT : UML2!Class = '';
+
+-- Rule that start the generation process os the test architecture
+rule Coment {
+	from s : UML2!"uml::Comment" (thisModule.inElements->includes(s))
+    to t : UML2!"uml::Comment" (
+        __xmiID__ <- s.__xmiID__,
+        body <- s.body,
+        eAnnotations <- s.eAnnotations,
+        ownedComment <- s.ownedComment,
+        annotatedElement <- s.annotatedElement)
+	do{
+		if (s.getBody() = 'start'){
+			--'PIM2PITM'.println();
+			--thisModule.DataModel.packagedElement.toString().println();
+			thisModule.DataModel <- UML2!Model->allInstances()->select(m | m.toString() = 'OUT!Data')->first();
+			self.createTestPackage();
+		}
+	}
+}
+
+-- Rule which create the test package
+rule createTestPackage(){
+	to tPack: UML2! "uml::Package"(
+		name <- 'TestPackage')
+	do{
+		thisModule.DataModel.packagedElement <- thisModule.DataModel.packagedElement->including(tPack);
+		self.createVerdictEnum (tPack);
+		self.createPrimitiveTypes (tPack);
+		self.createLogFile (tPack);
+		self.createArbiter(tPack);
+		self.createScheduler(tPack);
+		self.createTestContext(tPack);
+		self.createSUTSubClass(tPack);
+		 
+	}	
+}
+
+-- Rule that create the enumeration wich has the possibles verdicts of the test cases
+rule createVerdictEnum(pack: UML2!Package){
+	to verEnum: UML2!Enumeration(
+		name<- 'Verdict',
+		ownedLiteral <- Set{pass,fail,inconclusive, error} ),
+		
+	pass : UML2!EnumerationLiteral(
+		name <- 'pass'),
+		
+	fail : UML2!EnumerationLiteral(
+		name <- 'fail'),
+		
+	inconclusive : UML2!EnumerationLiteral(
+		name <- 'inconclusive'),
+
+	error : UML2!EnumerationLiteral(
+		name <- 'error'	)
+	do{
+		pack.packagedElement <- pack.packagedElement->including(verEnum);
+	}
+}
+
+rule createPrimitiveTypes (pack: UML2!Package){
+	to boolType: UML2!PrimitiveType(
+		name <- 'Boolean'),
+		
+	strType: UML2!PrimitiveType(
+		name <- 'String'),
+		
+	intType: UML2!PrimitiveType(
+		name <- 'Integer'),
+		
+	floatType: UML2!PrimitiveType(
+		name <- 'float'),
+		
+	ColType: UML2!PrimitiveType(
+		name <- 'Collection')
+	do{
+		thisModule.booleanType <- boolType;
+		thisModule.StringType <- strType;
+		thisModule.IntegerType <- intType;
+		thisModule.floatType <- floatType;
+		thisModule.CollectionType <- ColType;
+		pack.packagedElement <- pack.packagedElement->including(boolType);
+		pack.packagedElement <- pack.packagedElement->including(strType);
+		pack.packagedElement <- pack.packagedElement->including(intType);
+		pack.packagedElement <- pack.packagedElement->including(floatType);
+		pack.packagedElement <- pack.packagedElement->including(ColType);
+	}
+}
+
+-- Rule that create a LogFile class
+rule createLogFile(pack: UML2!Package){
+	to logClass: UML2!Class(
+		name <- 'LogFile',
+		ownedAttribute <- Set{nm, desc}),
+	
+		nm: UML2!Property(
+			name<- 'name',
+			type<- thisModule.StringType),
+			
+		desc: UML2!Property(
+			name<- 'description',
+			type<- thisModule.StringType)
+	do{
+		pack.packagedElement <- pack.packagedElement->including(logClass);
+	}
+}
+
+-- Rule that create the test class wich implements the Arbiter RT interface
+rule createArbiter(pack: UML2!Package){
+	using {
+		verType : UML2!Type = UML2!Enumeration.allInstancesFrom('OUT')->select(e | e.name = 'Verdict')->first();
+		logType : UML2!Type = UML2!Class.allInstancesFrom('OUT')->select(e | e.name = 'LogFile')->first();
+	}
+	to arbClass: UML2!Class(
+		name <- 'ArbiterRT',
+		ownedOperation <- Set{df, cv}),
+	
+		df: UML2!Operation(
+			name <- 'defineVerdict',
+			ownedParameter <- Set{expectedRes, executionRes, returnDefineVerdict}),
+			
+		expectedRes: UML2!Parameter(
+			type <- logType,
+			name <- 'expectedResults'),
+			
+		executionRes: UML2!Parameter(
+			type <- logType,
+			name <- 'executionResults'),
+		
+		returnDefineVerdict:UML2!Parameter(
+			type <- verType,
+			direction <- #return),
+		
+		cv: UML2!Operation(
+			name <- 'compareValues',
+			ownedParameter <- Set{expectedVal, executionVal, returnCompareValues}),
+			
+		expectedVal: UML2!Parameter(
+			type <- thisModule.StringType,
+			name <- 'expectedValue'),
+			
+		executionVal: UML2!Parameter(
+			type <- thisModule.StringType,
+			name <- 'executionValue'),
+		
+		returnCompareValues:UML2!Parameter(
+			type <- thisModule.booleanType,
+			direction <- #return)
+		
+	do{
+		pack.packagedElement <- pack.packagedElement->including(arbClass);
+	}
+}
+
+-- Rule that create the test class wich implements the Scheduler RT interface
+rule createScheduler(pack: UML2!Package){
+	to scheClass: UML2!Class(
+		name <- 'SchedulerRT',
+		ownedOperation <- Set{opc, stc}),
+	
+		opc: UML2!Operation(
+			name <- 'organizePreConditions'),
+		
+		stc: UML2!Operation(
+			name <- 'startTestCase')
+	do{
+		pack.packagedElement <- pack.packagedElement->including(scheClass);
+	}
+}
+
+-- Rule which create the test Context class
+rule createTestContext(pack: UML2!Package){
+	using{
+		SUT_stereo : UML2!Stereotype = thisModule.UTP_RT_Profile.getOwnedStereotypes()->select(str | str.name = 'SUT RT')->first();
+		SUT_Prop : UML2!Property = UML2!Property.allInstancesFrom('OUT')->select(p | p.isStereotypeApplied(SUT_stereo))->first();
+		SUT_Class : UML2!Class = SUT_Prop.type;	
+	
+		TComps : UML2!Property = UML2!Connector.allInstancesFrom('OUT')->select(e | e.getEnds()->exists(p | p.role.type = SUT_Class))->collect(c | c.getEnds()->collect(i | i.role.type)).flatten().excluding(SUT_Class);
+		TContext_stereo : UML2!Stereotype = thisModule.UTP_RT_Profile.getOwnedStereotypes()->select(str | str.name = 'Test Context RT')->first();
+	}
+	to tcontext: UML2!Class(
+		name <- SUT_Class.name + '_TestContext',
+		ownedAttribute <- Set{proc, prio},
+		ownedOperation <- Set{tconf}),
+	
+		proc: UML2!Property(
+			name<- 'isAProcess',
+			type<- thisModule.booleanType),
+			
+		prio: UML2!Property(
+			name<- 'priority',
+			type<- thisModule.IntegerType),
+			
+		tconf: UML2!Operation(
+			name <- 'testConfiguration')
+		
+	do{
+		prio.setIntegerDefaultValue(1000);
+		thisModule.SUT <- SUT_Class;
+		for (tc in TComps){
+			self.createTestComponent(pack, tc);
+		}
+		pack.packagedElement <- pack.packagedElement->including(tcontext);
+		tcontext.applyStereotype(TContext_stereo);
+	}
+}
+
+-- Rule which create the test Component class
+rule createTestComponent(pack: UML2!Package, class: UML2!Class){
+	using{
+		TComponent_stereo : UML2!Stereotype = thisModule.UTP_RT_Profile.getOwnedStereotypes()->select(str | str.name = 'Test Component RT')->first();
+	}
+	to tcomponent: UML2!Class(
+		name <- class.name + '_Emulator',
+		ownedAttribute <- Set{proc, prio, execT}),
+	
+		proc: UML2!Property(
+			name<- 'isAProcess',
+			type<- thisModule.booleanType),
+			
+		prio: UML2!Property(
+			name<- 'priority',
+			type<- thisModule.IntegerType),
+		
+		execT: UML2!Property(
+			name<- 'executionTime',
+			type<- thisModule.floatType)
+	do{
+		tcomponent.createGeneralization(class);
+		pack.packagedElement <- pack.packagedElement->including(tcomponent);
+		tcomponent.applyStereotype(TComponent_stereo);
+	}
+}
+
+-- Rule which create the extension class of the SUT
+rule createSUTSubClass(pack: UML2!Package){
+	using{
+		SUT_stereo : UML2!Stereotype = thisModule.UTP_RT_Profile.getOwnedStereotypes()->select(str | str.name = 'SUT RT')->first();
+	}
+	to subSUT: UML2!Class(
+		name<- thisModule.SUT.name + '_Extended',
+		ownedAttribute <- Set{mv, proc, prio, exT}),
+		
+	mv: UML2!Property(
+		name<- 'mainVariables',
+		type<- thisModule.CollectionType),
+		
+	proc: UML2!Property(
+		name<- 'isAProcess',
+		type<- thisModule.booleanType),
+			
+	prio: UML2!Property(
+		name<- 'priority',
+		type<- thisModule.IntegerType),
+			
+	exT: UML2!Property(
+			name<- 'executionTime',
+			type<- thisModule.floatType)
+	do{
+		subSUT.createGeneralization(thisModule.SUT);
+		pack.packagedElement <- pack.packagedElement->including(subSUT);
+		subSUT.applyStereotype(SUT_stereo);
+	}
+}
