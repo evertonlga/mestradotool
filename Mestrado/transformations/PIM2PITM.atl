@@ -14,7 +14,14 @@ helper def : floatType : UML2!PrimitiveType = '';
 
 helper def : CollectionType : UML2!PrimitiveType = '';
 
+helper def : TimeType : UML2!PrimitiveType = '';
+
 helper def : SUT : UML2!Class = '';
+
+helper def : SubSUT : UML2!Class = '';
+
+helper def : TestComponents : Set(UML2!Class) = Set{};
+
 
 -- Rule that start the generation process os the test architecture
 rule Coment {
@@ -46,8 +53,8 @@ rule createTestPackage(){
 		self.createLogFile (tPack);
 		self.createArbiter(tPack);
 		self.createScheduler(tPack);
+		self.createTimer(tPack);
 		self.createTestContext(tPack);
-		self.createSUTSubClass(tPack);
 		 
 	}	
 }
@@ -88,18 +95,23 @@ rule createPrimitiveTypes (pack: UML2!Package){
 		name <- 'float'),
 		
 	ColType: UML2!PrimitiveType(
-		name <- 'Collection')
+		name <- 'Collection'),
+		
+	time: UML2!PrimitiveType(
+		name <- 'Time')
 	do{
 		thisModule.booleanType <- boolType;
 		thisModule.StringType <- strType;
 		thisModule.IntegerType <- intType;
 		thisModule.floatType <- floatType;
 		thisModule.CollectionType <- ColType;
+		thisModule.TimeType <- time;
 		pack.packagedElement <- pack.packagedElement->including(boolType);
 		pack.packagedElement <- pack.packagedElement->including(strType);
 		pack.packagedElement <- pack.packagedElement->including(intType);
 		pack.packagedElement <- pack.packagedElement->including(floatType);
 		pack.packagedElement <- pack.packagedElement->including(ColType);
+		pack.packagedElement <- pack.packagedElement->including(time);
 	}
 }
 
@@ -165,9 +177,151 @@ rule createArbiter(pack: UML2!Package){
 		
 	do{
 		pack.packagedElement <- pack.packagedElement->including(arbClass);
+		self.createDefaultArbiterStateMachine (arbClass, pack);
 	}
 }
 
+-- Rule that create the test class wich implements the Scheduler RT interface
+rule createDefaultArbiterStateMachine(arbClass: UML2!Class, pack: UML2!Package){
+	using{
+		opDV: UML2!Operation = arbClass.ownedOperation->select(o | o.name = 'defineVerdict');
+		opCV: UML2!Operation = arbClass.ownedOperation->select(o | o.name = 'compareValues');
+	}
+	to sm: UML2!StateMachine(
+		region <- reg),
+		
+		reg: UML2!Region(
+			subvertex <- Set{begin, idle, runn, choise, pass, fail, incon, err, final},
+			transition <- Set{beg_idle, idle_runn, runn_choise, runn_pass, choise_run, choise_fail, choise_incon, choise_err, pass_final, fail_final, incon_final, err_final}),
+		
+		begin: UML2!Pseudostate(
+			kind <- #initial),
+			
+		idle: UML2!State(
+			name <- 'Idle'),
+			
+		beg_idle: UML2!Transition(
+			source <- begin,
+			target <- idle,
+			effect <- fb),
+		
+		fb: UML2!FunctionBehavior(
+			name <- 'numPassed = 0'),
+			
+		runn: UML2!State(
+			name <- 'Running'),
+		
+		idle_runn: UML2!Transition(
+			source <- idle,
+			target <- runn,
+			trigger <- trig1),
+		
+		trig1: UML2!Trigger(
+			event <- ev1),
+			
+		ev1: UML2!CallEvent(
+			operation <- opDV),
+			
+		choise: UML2!Pseudostate(
+			kind <- #choice),
+			
+		runn_choise: UML2!Transition(
+			source <- runn,
+			target <- choise,
+			trigger <- trig2),
+		
+		trig2: UML2!Trigger(
+			event <- ev2),
+			
+		ev2: UML2!CallEvent(
+			operation <- opCV),
+			
+		pass: UML2!State(
+			name <- 'pass'),
+		
+		runn_pass: UML2!Transition(
+			source <- runn,
+			target <- pass,
+			guard <- const1),
+			
+		const1: UML2!Constraint(
+			specification <- oe1),
+		
+		oe1: UML2!OpaqueExpression(
+			body <- 'numPassed == numOfComparations'),
+			
+		fail: UML2!State(
+			name <- 'fail'),
+			
+		choise_run: UML2!Transition(
+			source <- choise,
+			target <- runn,
+			effect <- fb2),
+		
+		fb2: UML2!FunctionBehavior(
+			name <- 'numPassed++'),
+		
+		choise_fail: UML2!Transition(
+			source <- choise,
+			target <- fail,
+			guard <- const2),
+			
+		const2: UML2!Constraint(
+			specification <- oe2),
+		
+		oe2: UML2!OpaqueExpression(
+			body <- 'result == fail'),
+			
+		incon: UML2!State(
+			name <- 'inconclusive'),
+		
+		choise_incon: UML2!Transition(
+			source <- choise,
+			target <- incon,
+			guard <- const3),
+			
+		const3: UML2!Constraint(
+			specification <- oe3),
+		
+		oe3: UML2!OpaqueExpression(
+			body <- 'result == inconclusive'),
+			
+		err: UML2!State(
+			name <- 'error'),
+		
+		choise_err: UML2!Transition(
+			source <- choise,
+			target <- err,
+			guard <- const4),
+			
+		const4: UML2!Constraint(
+			specification <- oe4),
+		
+		oe4: UML2!OpaqueExpression(
+			body <- 'result == error'),
+			
+		final: UML2!FinalState,
+		
+		pass_final: UML2!Transition(
+			source <- pass,
+			target <- final),
+		
+		fail_final: UML2!Transition(
+			source <- fail,
+			target <- final),
+		
+		incon_final: UML2!Transition(
+			source <- incon,
+			target <- final),
+			
+		err_final: UML2!Transition(
+			source <- err,
+			target <- final)
+	do{
+		pack.packagedElement <- pack.packagedElement->including(sm)->including(ev1)->including(ev2);
+	}
+			
+}
 -- Rule that create the test class wich implements the Scheduler RT interface
 rule createScheduler(pack: UML2!Package){
 	to scheClass: UML2!Class(
@@ -181,6 +335,44 @@ rule createScheduler(pack: UML2!Package){
 			name <- 'startTestCase')
 	do{
 		pack.packagedElement <- pack.packagedElement->including(scheClass);
+	}
+}
+
+-- Rule that create the test class wich implements the "Timer RT" interface
+rule createTimer(pack: UML2!Package){
+	to tClass: UML2!Class(
+		name <- 'TimerRT',
+		ownedOperation <- Set{st, stp, rd},
+		ownedAttribute <- Set{ir, it}),
+	
+		ir: UML2!Property(
+			name<- 'isRunning',
+			type<- thisModule.booleanType),
+			
+		it: UML2!Property(
+			name<- 'inteferenceTime',
+			type<- thisModule.TimeType),
+	
+		st: UML2!Operation(
+			name <- 'start',
+			ownedParameter <- Set{ex}),
+			
+		ex: UML2!Parameter(
+			type <- thisModule.TimeType,
+			name <- 'expire'),
+		
+		stp: UML2!Operation(
+			name <- 'stop'),
+		
+		rd: UML2!Operation(
+			name <- 'read',
+			ownedParameter <- Set{retTm}),
+			
+		retTm: UML2!Parameter(
+			type <- thisModule.TimeType,
+			direction <- #return)
+	do{
+		pack.packagedElement <- pack.packagedElement->including(tClass);
 	}
 }
 
@@ -214,7 +406,12 @@ rule createTestContext(pack: UML2!Package){
 		prio.setIntegerDefaultValue(1000);
 		thisModule.SUT <- SUT_Class;
 		for (tc in TComps){
-			self.createTestComponent(pack, tc);
+			self.createTestComponent(pack, tc, tcontext);
+		}
+		self.createSUTSubClass(pack);
+		thisModule.SubSUT.toString().println();
+		for (tc in thisModule.TestComponents){
+			self.createCompositeStructureDiagramConections (tcontext, tc);
 		}
 		pack.packagedElement <- pack.packagedElement->including(tcontext);
 		tcontext.applyStereotype(TContext_stereo);
@@ -222,7 +419,7 @@ rule createTestContext(pack: UML2!Package){
 }
 
 -- Rule which create the test Component class
-rule createTestComponent(pack: UML2!Package, class: UML2!Class){
+rule createTestComponent(pack: UML2!Package, class: UML2!Class, tcontext: UML2!Class){
 	using{
 		TComponent_stereo : UML2!Stereotype = thisModule.UTP_RT_Profile.getOwnedStereotypes()->select(str | str.name = 'Test Component RT')->first();
 	}
@@ -240,10 +437,11 @@ rule createTestComponent(pack: UML2!Package, class: UML2!Class){
 		
 		execT: UML2!Property(
 			name<- 'executionTime',
-			type<- thisModule.floatType)
+			type<- thisModule.TimeType)
 	do{
 		tcomponent.createGeneralization(class);
 		pack.packagedElement <- pack.packagedElement->including(tcomponent);
+		thisModule.TestComponents <- thisModule.TestComponents->including(tcomponent);
 		tcomponent.applyStereotype(TComponent_stereo);
 	}
 }
@@ -271,10 +469,80 @@ rule createSUTSubClass(pack: UML2!Package){
 			
 	exT: UML2!Property(
 			name<- 'executionTime',
-			type<- thisModule.floatType)
+			type<- thisModule.TimeType)
 	do{
 		subSUT.createGeneralization(thisModule.SUT);
+		
+		for (tc in thisModule.TestComponents){
+			self.createTestComponentPropertys(subSUT, tc);
+			self.addSubSUTPropertyToTestComponents(subSUT, tc);
+		}
+		for (tc in thisModule.TestComponents){
+			self.createAssociationsBetweenTContextAndTCompo (subSUT, tc, pack);
+		}
+		
 		pack.packagedElement <- pack.packagedElement->including(subSUT);
 		subSUT.applyStereotype(SUT_stereo);
+		thisModule.SubSUT <- subSUT;
+	}
+}
+
+rule addSubSUTPropertyToTestComponents(sub_SUT: UML2!Class, tc: UML2!Class){
+	to assSS_TC: UML2!Property(
+		visibility<- #private,
+		type<- sub_SUT)
+	do{
+		tc.ownedAttribute <- tc.ownedAttribute->including(assSS_TC);
+	}
+}
+
+rule createTestComponentPropertys(subSUT: UML2!Package, tc: UML2!Class){
+	to prop: UML2!Property(
+		visibility <- #private,
+		type <- tc)
+	
+	do{
+		subSUT.ownedAttribute <- subSUT.ownedAttribute->including(prop);
+	}		
+}
+
+rule createAssociationsBetweenTContextAndTCompo (subSUT: UML2!Class, tcomp:UML2!Class, pack : UML2!Package){
+	using{
+		subSUTProp: UML2!Property = tcomp.ownedAttribute->select(p | p.type.name = subSUT.name)->first();
+		tcompProp: UML2!Property = subSUT.ownedAttribute->select(p | p.type.name = tcomp.name)->first(); 
+	}
+	to ass: UML2!Association(
+		memberEnd <- Set{subSUTProp, tcompProp})
+	
+	do{
+		pack.packagedElement <- pack.packagedElement->including(ass);
+	}
+}
+
+rule createCompositeStructureDiagramConections(tcx: UML2!Class, tcomp: UML2!Class){
+	using{
+		propTC: UML2!Property = tcomp.ownedAttribute->select(p | p.type.name = thisModule.SubSUT.name)->first();
+		propSUT: UML2!Property = thisModule.SubSUT.ownedAttribute->select(p | p.type.name = tcomp.name)->first();
+	}
+	to pp: UML2!Property(
+		visibility<- #private,
+		type<- tcomp),
+		
+	cn: UML2!Connector(
+		end <- Set{ce1, ce2}),
+	
+	ce1: UML2!ConnectorEnd(
+		role <- propTC ),
+		
+	ce2: UML2!ConnectorEnd(
+		role <- propSUT)
+	do{
+		thisModule.SubSUT.toString().println();
+		tcomp.toString().println();
+		propTC.toString().println();
+		propTC.toString().println();
+		'--------'.println();
+		tcx.ownedAttribute <- tcx.ownedAttribute->including(pp);
+		tcx.ownedConnector <- tcx.ownedConnector->including(cn); 
 	}
 }
