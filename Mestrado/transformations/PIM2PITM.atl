@@ -26,7 +26,7 @@ helper def : TestComponents : Set(UML2!Class) = Set{};
 -- Rule that start the generation process os the test architecture
 rule Coment {
 	from s : UML2!"uml::Comment" (thisModule.inElements->includes(s))
-    to t : UML2!"uml::Comment" (
+	to t : UML2!"uml::Comment" (
         __xmiID__ <- s.__xmiID__,
         body <- s.body,
         eAnnotations <- s.eAnnotations,
@@ -385,12 +385,18 @@ rule createTestContext(pack: UML2!Package){
 	
 		TComps : UML2!Property = UML2!Connector.allInstancesFrom('OUT')->select(e | e.getEnds()->exists(p | p.role.type = SUT_Class))->collect(c | c.getEnds()->collect(i | i.role.type)).flatten().excluding(SUT_Class);
 		TContext_stereo : UML2!Stereotype = thisModule.UTP_RT_Profile.getOwnedStereotypes()->select(str | str.name = 'Test Context RT')->first();
+		arb : UML2!Class = UML2!Class.allInstancesFrom('OUT')->select(e | e.name = 'ArbiterRT')->first();
+		sch : UML2!Class = UML2!Class.allInstancesFrom('OUT')->select(e | e.name = 'SchedulerRT')->first();
 	}
 	to tcontext: UML2!Class(
 		name <- SUT_Class.name + '_TestContext',
-		ownedAttribute <- Set{proc, prio},
-		ownedOperation <- Set{tconf}),
-	
+		ownedAttribute <- Set{sut, proc, prio, assArb, assSch},
+		ownedOperation <- Set{tconf, cPrio}),
+		
+		sut: UML2!Property(
+			name<- 'SUT',
+			type<- SUT_Class),
+		
 		proc: UML2!Property(
 			name<- 'isAProcess',
 			type<- thisModule.booleanType),
@@ -400,8 +406,18 @@ rule createTestContext(pack: UML2!Package){
 			type<- thisModule.IntegerType),
 			
 		tconf: UML2!Operation(
-			name <- 'testConfiguration')
+			name <- 'testConfiguration'),
 		
+		cPrio: UML2!Operation(
+			name <- 'changePriority'),
+		
+		assArb: UML2!Property(
+			visibility<- #private,
+			type<- arb),
+		
+		assSch: UML2!Property(
+			visibility<- #private,
+			type<- sch)
 	do{
 		prio.setIntegerDefaultValue(1000);
 		thisModule.SUT <- SUT_Class;
@@ -409,12 +425,40 @@ rule createTestContext(pack: UML2!Package){
 			self.createTestComponent(pack, tc, tcontext);
 		}
 		self.createSUTSubClass(pack);
-		thisModule.SubSUT.toString().println();
+		--thisModule.SubSUT.toString().println();
 		for (tc in thisModule.TestComponents){
 			self.createCompositeStructureDiagramConections (tcontext, tc);
 		}
+		self.includingTCxAtribute (pack, arb, tcontext);
+		self.includingTCxAtribute (pack, sch, tcontext);
+		self.createAssocTCxArbSch (pack, arb, tcontext);
+		self.createAssocTCxArbSch (pack, sch, tcontext);
 		pack.packagedElement <- pack.packagedElement->including(tcontext);
 		tcontext.applyStereotype(TContext_stereo);
+	}
+}
+
+-- This rule includes a property of Text Context class in the Arbiter/Scheduler class 
+rule includingTCxAtribute(pack: UML2!Package, class: UML2!Class, tcx: UML2!Class){
+	to propTcx: UML2!Property(
+		visibility<- #private,
+		type<- tcx)
+	do{
+		class.ownedAttribute <- class.ownedAttribute->including(propTcx);
+	}
+}
+
+-- This rule creates an association between the Test Context class and the Arbiter/Scheduler class
+rule createAssocTCxArbSch (pack: UML2!Package, class: UML2!Class, tcx: UML2!Class){
+	using{
+		tcxProp: UML2!Property = class.ownedAttribute->select(p | p.type.name = tcx.name)->first();
+		classProp: UML2!Property = tcx.ownedAttribute->select(p | p.type.name = class.name)->first(); 
+	}
+	to ass: UML2!Association(
+		memberEnd <- Set{tcxProp, classProp})
+	
+	do{
+		pack.packagedElement <- pack.packagedElement->including(ass);
 	}
 }
 
@@ -425,8 +469,17 @@ rule createTestComponent(pack: UML2!Package, class: UML2!Class, tcontext: UML2!C
 	}
 	to tcomponent: UML2!Class(
 		name <- class.name + '_Emulator',
+		ownedOperation <- Set{cp},
 		ownedAttribute <- Set{proc, prio, execT}),
 	
+		cp: UML2!Operation(
+			name <- 'changePriority',
+			ownedParameter <- Set{val}),
+			
+		val: UML2!Parameter(
+			type <- thisModule.IntegerType,
+			name <- 'value'),
+		
 		proc: UML2!Property(
 			name<- 'isAProcess',
 			type<- thisModule.booleanType),
@@ -439,10 +492,23 @@ rule createTestComponent(pack: UML2!Package, class: UML2!Class, tcontext: UML2!C
 			name<- 'executionTime',
 			type<- thisModule.TimeType)
 	do{
-		tcomponent.createGeneralization(class);
+		--tcomponent.createGeneralization(class);
+		for (o in class.ownedOperation){
+			self.createOperation(tcomponent, o);
+		}	
 		pack.packagedElement <- pack.packagedElement->including(tcomponent);
 		thisModule.TestComponents <- thisModule.TestComponents->including(tcomponent);
 		tcomponent.applyStereotype(TComponent_stereo);
+	}
+}
+
+-- Rule that creates an operation based on the original operation
+rule createOperation(tc: UML2!Class, op: UML2!Operation){
+	to opera: UML2!Operation(
+		name <- op.name)
+	
+	do{
+		tc.ownedOperation <- tc.ownedOperation->including(opera);
 	}
 }
 
@@ -537,11 +603,6 @@ rule createCompositeStructureDiagramConections(tcx: UML2!Class, tcomp: UML2!Clas
 	ce2: UML2!ConnectorEnd(
 		role <- propSUT)
 	do{
-		thisModule.SubSUT.toString().println();
-		tcomp.toString().println();
-		propTC.toString().println();
-		propTC.toString().println();
-		'--------'.println();
 		tcx.ownedAttribute <- tcx.ownedAttribute->including(pp);
 		tcx.ownedConnector <- tcx.ownedConnector->including(cn); 
 	}

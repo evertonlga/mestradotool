@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MagicDrawProfile="http:///schemas/MagicDrawProfile/_HY2hUOLqEd-XZ7m4J93xdw/0" xmlns:RealTimeDesignProfile="http:///schemas/RealTimeDesignProfile/_HY7Z0OLqEd-XZ7m4J93xdw/0" xmlns:UTPRT="http:///schemas/UTPRT/_HZCukOLqEd-XZ7m4J93xdw/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xsi:schemaLocation="http:///schemas/MagicDrawProfile/_HY2hUOLqEd-XZ7m4J93xdw/0 UML_Standard_Profile.MagicDraw_Profile.profile.uml#_HvFQA-LqEd-XZ7m4J93xdw http:///schemas/RealTimeDesignProfile/_HY7Z0OLqEd-XZ7m4J93xdw/0 Real_Time_Design_Profile.profile.uml#_HvIT3OLqEd-XZ7m4J93xdw http:///schemas/UTPRT/_HZCukOLqEd-XZ7m4J93xdw/0 UTP_RT.profile.uml#_HvBlouLqEd-XZ7m4J93xdw">
+<xmi:XMI xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:MagicDrawProfile="http:///schemas/MagicDrawProfile/_xTmJ4OhZEd-ML7BnRRxtaA/0" xmlns:RealTimeDesignProfile="http:///schemas/RealTimeDesignProfile/_xTsQgOhZEd-ML7BnRRxtaA/0" xmlns:UTPRT="http:///schemas/UTPRT/_xS9QsOhZEd-ML7BnRRxtaA/0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xsi:schemaLocation="http:///schemas/MagicDrawProfile/_xTmJ4OhZEd-ML7BnRRxtaA/0 UML_Standard_Profile.MagicDraw_Profile.profile.uml#_xT2pQehZEd-ML7BnRRxtaA http:///schemas/RealTimeDesignProfile/_xTsQgOhZEd-ML7BnRRxtaA/0 Real_Time_Design_Profile.profile.uml#_xT5sxuhZEd-ML7BnRRxtaA http:///schemas/UTPRT/_xS9QsOhZEd-ML7BnRRxtaA/0 UTP_RT.profile.uml#_xT4eWuhZEd-ML7BnRRxtaA">
   <uml:Model xmi:id="eee_1045467100313_135436_1" name="Data" viewpoint="">
     <ownedComment xmi:id="_16_8_a9502c6_1285785421936_594309_1265" body="Author:Leandro.&#xA;Created:9/29/10 3:37 PM.&#xA;Title:.&#xA;Comment:.&#xA;" annotatedElement="eee_1045467100313_135436_1"/>
     <ownedComment xmi:id="_16_9_a9502c6_1287523872612_818352_1860" body="start"/>
@@ -9,10 +9,66 @@
     <packageImport xmi:id="_0javaPrimitiveTypesData">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/JavaPrimitiveTypes.library.uml#_0"/>
     </packageImport>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285788174150_2547_2114" name="Battery change"/>
     <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285788112245_987996_2102" name="Analisis of Power"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_16_8_a9502c6_1285789197836_400859_2240" name="Utility Elements">
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_16_8_a9502c6_1285792511364_212250_3078" name="ClockKind">
+        <ownedLiteral xmi:id="_16_8_a9502c6_1285792526426_879691_3098" name="absolut"/>
+        <ownedLiteral xmi:id="_16_8_a9502c6_1285792530073_132195_3100" name="relative"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_a9502c6_1285791936144_46337_2987" name="PowerFailed">
+        <generalization xmi:id="_16_8_a9502c6_1285791977190_352464_3011" general="_16_8_a9502c6_1285790643861_58865_2614"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285792001430_798855_3014" name="Clock">
+        <ownedAttribute xmi:id="_16_8_a9502c6_1285792486923_660877_3074" name="kind" visibility="private" type="_16_8_a9502c6_1285792511364_212250_3078">
+          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_16_8_a9502c6_1285792554924_794390_3102" name="" instance="_16_8_a9502c6_1285792526426_879691_3098"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_16_8_a9502c6_1285792565077_712451_3103" name="currentTime" visibility="private" type="_16_8_a9502c6_1285792425826_855949_3046"/>
+        <ownedAttribute xmi:id="_16_8_a9502c6_1285792572729_278131_3105" name="timerTime" visibility="private" type="_16_8_a9502c6_1285792425826_855949_3046"/>
+        <ownedOperation xmi:id="_16_8_a9502c6_1285792406028_42518_3036" name="start" visibility="public"/>
+        <ownedOperation xmi:id="_16_8_a9502c6_1285792409298_138475_3039" name="reset" visibility="public"/>
+        <ownedOperation xmi:id="_16_8_a9502c6_1285792411900_446248_3042" name="getTime" visibility="public">
+          <ownedParameter xmi:id="_16_8_a9502c6_1285792449706_418701_3066" name="" visibility="public" type="_16_8_a9502c6_1285792425826_855949_3046" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_16_8_a9502c6_1285792449730_13152_3067" name="timer" visibility="public">
+          <ownedParameter xmi:id="_16_8_a9502c6_1285792464790_550096_3069" name="value" visibility="public" type="_16_8_a9502c6_1285792425826_855949_3046"/>
+        </ownedOperation>
+        <ownedOperation xmi:id="_16_8_a9502c6_1285792472497_49932_3070" name="getTimerTime" visibility="public">
+          <ownedParameter xmi:id="_16_8_a9502c6_1285792482037_820857_3073" name="" visibility="public" type="_16_8_a9502c6_1285792425826_855949_3046" direction="return"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_a9502c6_1285790643861_58865_2614" name="Interruption"/>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_16_8_a9502c6_1285790835860_178026_2639" name="InterruptEnum">
+        <ownedLiteral xmi:id="_16_8_a9502c6_1285791915233_564451_2960" name="allow"/>
+        <ownedLiteral xmi:id="_16_8_a9502c6_1285791917943_507011_2962" name="deny"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_a9502c6_1285791931288_826069_2966" name="IntruderDetected">
+        <generalization xmi:id="_16_8_a9502c6_1285791974466_639218_3008" general="_16_8_a9502c6_1285790643861_58865_2614"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_16_8_a9502c6_1285792425826_855949_3046" name="TimeUnit"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285788151449_460929_2108" name="Alarm procedures"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="magicdraw_uml_standard_profile_v_0001" name="UML Standard Profile">
+      <ownedComment xmi:id="_be00301_1078843546940_242228_131" body="UML Standard Profile contains UML metamodel (metaclasses without properties and associations), StandardProfileL2 and StandardProfileL3 from UML specification, Standard UML stereotypes defined in annex C of UML specification.&#xA;Profile also includes validation suites for UML model correctness and completeness checking, and stereotypes used by MagicDraw internally." annotatedElement="magicdraw_uml_standard_profile_v_0001"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Model" xmi:id="_16_8_a9502c6_1285787033463_718327_1850" name="Power Failed" viewpoint="">
+      <packagedElement xmi:type="uml:Actor" xmi:id="_16_8_a9502c6_1285787084647_632312_1862" name="Circuit Power Monitor"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285787141382_501016_1942" name="" memberEnd="_16_8_a9502c6_1285787141383_260073_1944 _16_8_a9502c6_1285787141382_186111_1943" navigableOwnedEnd="_16_8_a9502c6_1285787141382_186111_1943 _16_8_a9502c6_1285787141383_260073_1944">
+        <ownedEnd xmi:id="_16_8_a9502c6_1285787141382_186111_1943" name="" visibility="private" type="_16_8_a9502c6_1285787091188_930630_1904" association="_16_8_a9502c6_1285787141382_501016_1942"/>
+        <ownedEnd xmi:id="_16_8_a9502c6_1285787141383_260073_1944" name="" visibility="private" type="_16_8_a9502c6_1285787084647_632312_1862" association="_16_8_a9502c6_1285787141382_501016_1942"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285787150773_629163_1955" name="" memberEnd="_16_8_a9502c6_1285787150773_521511_1956 _16_8_a9502c6_1285787150774_138987_1957" navigableOwnedEnd="_16_8_a9502c6_1285787150773_521511_1956 _16_8_a9502c6_1285787150774_138987_1957">
+        <ownedEnd xmi:id="_16_8_a9502c6_1285787150773_521511_1956" name="" visibility="private" type="_16_8_a9502c6_1285787087188_890798_1883" association="_16_8_a9502c6_1285787150773_629163_1955"/>
+        <ownedEnd xmi:id="_16_8_a9502c6_1285787150774_138987_1957" name="" visibility="private" type="_16_8_a9502c6_1285787100697_367393_1919" association="_16_8_a9502c6_1285787150773_629163_1955"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285787100697_367393_1919" name="Alternate to backup"/>
+      <packagedElement xmi:type="uml:Actor" xmi:id="_16_8_a9502c6_1285787087188_890798_1883" name="Alarm System"/>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285787091188_930630_1904" name="Stop the alarm system">
+        <include xmi:id="_16_8_a9502c6_1285787138495_808086_1934" name="" visibility="public" addition="_16_8_a9502c6_1285787100697_367393_1919"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285788064191_388584_2096" name="Treat Interruption"/>
     <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285788032612_607509_2090" name="Examination rooms"/>
-    <packagedElement xmi:type="uml:Component" xmi:id="_16_8_a9502c6_1285787588642_984630_2065" name="Circuit Monitor" clientDependency="_16_8_a9502c6_1285788174160_46935_2116 _16_8_a9502c6_1285788219089_538191_2133 _16_8_a9502c6_1285788112257_609574_2104" isActive="true">
+    <packagedElement xmi:type="uml:Component" xmi:id="_16_8_a9502c6_1285787588642_984630_2065" name="Circuit Monitor" clientDependency="_16_8_a9502c6_1285788112257_609574_2104 _16_8_a9502c6_1285788174160_46935_2116 _16_8_a9502c6_1285788219089_538191_2133" isActive="true">
       <ownedAttribute xmi:id="_16_9_a9502c6_1287598960878_500715_3275" name="" visibility="private" type="_16_8_a9502c6_1285791635695_412155_2853" aggregation="composite">
         <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_a9502c6_1287598997019_117353_3312" name="" value="1"/>
         <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_a9502c6_1287598997019_523195_3311" name="" value="1"/>
@@ -29,7 +85,7 @@
       <interfaceRealization xmi:id="_16_8_a9502c6_1285788174160_46935_2116" name="" supplier="_16_8_a9502c6_1285788174150_2547_2114" client="_16_8_a9502c6_1285787588642_984630_2065" contract="_16_8_a9502c6_1285788174150_2547_2114"/>
       <packagedElement xmi:type="uml:Usage" xmi:id="_16_8_a9502c6_1285788219089_538191_2133" name="" supplier="_16_8_a9502c6_1285788064191_388584_2096" client="_16_8_a9502c6_1285787588642_984630_2065"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:Component" xmi:id="_16_8_a9502c6_1285787586689_958942_2040" name="Interruption Manager" clientDependency="_16_8_a9502c6_1285788237003_353008_2147 _16_8_a9502c6_1285788064202_788705_2098 _16_8_a9502c6_1285788229653_87710_2140" isActive="true">
+    <packagedElement xmi:type="uml:Component" xmi:id="_16_8_a9502c6_1285787586689_958942_2040" name="Interruption Manager" clientDependency="_16_8_a9502c6_1285788229653_87710_2140 _16_8_a9502c6_1285788064202_788705_2098 _16_8_a9502c6_1285788237003_353008_2147" isActive="true">
       <ownedAttribute xmi:id="_16_9_a9502c6_1287598489379_287245_3052" name="" visibility="private" type="_16_8_a9502c6_1285790570198_548778_2450" aggregation="composite">
         <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_a9502c6_1287598520761_81576_3089" name="" value="1"/>
         <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_a9502c6_1287598520761_734336_3088" name="" value="1"/>
@@ -46,153 +102,91 @@
       <packagedElement xmi:type="uml:Usage" xmi:id="_16_8_a9502c6_1285788229653_87710_2140" name="" supplier="_16_8_a9502c6_1285788174150_2547_2114" client="_16_8_a9502c6_1285787586689_958942_2040"/>
       <packagedElement xmi:type="uml:Usage" xmi:id="_16_8_a9502c6_1285788237003_353008_2147" name="" supplier="_16_8_a9502c6_1285788151449_460929_2108" client="_16_8_a9502c6_1285787586689_958942_2040"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285788151449_460929_2108" name="Alarm procedures"/>
-    <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285788064191_388584_2096" name="Treat Interruption"/>
-    <packagedElement xmi:type="uml:Package" xmi:id="_16_8_a9502c6_1285789156495_193456_2201" name="System Alarm">
-      <packageImport xmi:id="_16_8_a9502c6_1285789213446_592115_2251" importedPackage="_16_8_a9502c6_1285789197836_400859_2240"/>
-      <packagedElement xmi:type="uml:Package" xmi:id="_16_8_a9502c6_1285789183175_661346_2226" name="Circuit Monitor">
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285791639090_620523_2876" name="BackupExecutor">
-          <ownedOperation xmi:id="_16_8_a9502c6_1285791773184_442055_2905" name="desactivateSystem" visibility="public"/>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285791784442_409663_2908" name="reactivateSystem" visibility="public"/>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285791798533_736950_2911" name="realizeExchange" visibility="public"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285791635695_412155_2853" name="CircuitAnalizer" clientDependency="_16_8_a9502c6_1285791818964_333641_2929 _16_8_a9502c6_1285791846655_885647_2933" isActive="true">
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285791807417_881764_2919" name="" visibility="private" type="_16_8_a9502c6_1285791639090_620523_2876" association="_16_8_a9502c6_1285791807417_680599_2918"/>
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285791866096_629865_2939" name="" visibility="private" type="_16_8_a9502c6_1285790570198_548778_2450" association="_16_8_a9502c6_1285791866095_704286_2938"/>
-          <interfaceRealization xmi:id="_16_8_a9502c6_1285791818964_333641_2929" name="" supplier="_16_8_a9502c6_1285791044965_802850_2695" client="_16_8_a9502c6_1285791635695_412155_2853" contract="_16_8_a9502c6_1285791044965_802850_2695"/>
-          <interfaceRealization xmi:id="_16_8_a9502c6_1285791846655_885647_2933" name="" supplier="_16_8_a9502c6_1285791048797_15689_2717" client="_16_8_a9502c6_1285791635695_412155_2853" contract="_16_8_a9502c6_1285791048797_15689_2717"/>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285791703039_248423_2897" name="informChange" visibility="public"/>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285791709276_344892_2900" name="executeExchange" visibility="public"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791866095_704286_2938" name="" memberEnd="_16_8_a9502c6_1285791866096_110346_2940 _16_8_a9502c6_1285791866096_629865_2939">
-          <ownedEnd xmi:id="_16_8_a9502c6_1285791866096_110346_2940" name="" visibility="private" type="_16_8_a9502c6_1285791635695_412155_2853" association="_16_8_a9502c6_1285791866095_704286_2938"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791807417_680599_2918" name="" memberEnd="_16_8_a9502c6_1285791807418_13633_2920 _16_8_a9502c6_1285791807417_881764_2919">
-          <ownedEnd xmi:id="_16_8_a9502c6_1285791807418_13633_2920" name="" visibility="private" type="_16_8_a9502c6_1285791635695_412155_2853" association="_16_8_a9502c6_1285791807417_680599_2918"/>
-        </packagedElement>
+    <packagedElement xmi:type="uml:Component" xmi:id="_16_8_a9502c6_1285787577550_103705_1988" name="Sensor Manager" clientDependency="_16_8_a9502c6_1285788032628_250778_2092 _16_8_a9502c6_1285788207348_991708_2126" isActive="true">
+      <ownedAttribute xmi:id="_16_9_a9502c6_1287598051619_600029_2931" name="" visibility="private" type="_16_8_a9502c6_1285789460819_850929_2303" aggregation="composite">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_a9502c6_1287598196390_406960_2993" name="" value="200"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_a9502c6_1287598196389_330885_2992" name="" value="200"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_16_9_a9502c6_1287598076961_802208_2946" name="" visibility="private" type="_16_8_a9502c6_1285789458672_8286_2280" aggregation="composite">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_a9502c6_1287598223937_360665_2997" name="" value="30"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_a9502c6_1287598223937_891487_2996" name="" value="30"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_16_9_a9502c6_1287598086877_561293_2961" name="" visibility="private" type="_16_8_a9502c6_1285789456521_86980_2257" aggregation="composite">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_a9502c6_1287598208838_562808_2995" name="" value="50"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_a9502c6_1287598208838_192221_2994" name="" value="50"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_16_9_a9502c6_1287598146674_826051_2976" name="" visibility="private" type="_16_8_a9502c6_1285789668201_969749_2359" aggregation="composite">
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_a9502c6_1287598232484_89692_2999" name="" value="1"/>
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_a9502c6_1287598232483_844882_2998" name="" value="1"/>
+      </ownedAttribute>
+      <ownedConnector xmi:id="_16_9_a9502c6_1287598256833_522758_3004" name="" visibility="public" kind="assembly">
+        <end xmi:id="_16_9_a9502c6_1287598256833_824808_3005" role="_16_9_a9502c6_1287598051619_600029_2931"/>
+        <end xmi:id="_16_9_a9502c6_1287598256833_396333_3006" role="_16_9_a9502c6_1287598146674_826051_2976"/>
+      </ownedConnector>
+      <ownedConnector xmi:id="_16_9_a9502c6_1287598260816_129059_3013" name="" visibility="public" kind="assembly">
+        <end xmi:id="_16_9_a9502c6_1287598260816_513813_3014" role="_16_9_a9502c6_1287598086877_561293_2961"/>
+        <end xmi:id="_16_9_a9502c6_1287598260817_909079_3015" role="_16_9_a9502c6_1287598146674_826051_2976"/>
+      </ownedConnector>
+      <ownedConnector xmi:id="_16_9_a9502c6_1287598264448_790235_3022" name="" visibility="public" kind="assembly">
+        <end xmi:id="_16_9_a9502c6_1287598264448_696998_3023" role="_16_9_a9502c6_1287598076961_802208_2946"/>
+        <end xmi:id="_16_9_a9502c6_1287598264448_865115_3024" role="_16_9_a9502c6_1287598146674_826051_2976"/>
+      </ownedConnector>
+      <interfaceRealization xmi:id="_16_8_a9502c6_1285788032628_250778_2092" name="" supplier="_16_8_a9502c6_1285788032612_607509_2090" client="_16_8_a9502c6_1285787577550_103705_1988" contract="_16_8_a9502c6_1285788032612_607509_2090"/>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_16_8_a9502c6_1285788207348_991708_2126" name="" supplier="_16_8_a9502c6_1285788064191_388584_2096" client="_16_8_a9502c6_1285787577550_103705_1988"/>
+      <packagedElement xmi:type="uml:StateMachine" xmi:id="_16_9_a9502c6_1287606456974_218049_3330" name="SM" isReentrant="true">
+        <region xmi:id="_16_9_a9502c6_1287606456975_45275_3331" name="" visibility="public"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Package" xmi:id="_16_8_a9502c6_1285789171814_433252_2212" name="Monitor">
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791392215_474317_2791" name="" memberEnd="_16_8_a9502c6_1285791392215_340073_2793 _16_8_a9502c6_1285791392215_648788_2792">
-          <ownedEnd xmi:id="_16_8_a9502c6_1285791392215_340073_2793" name="" visibility="private" type="_16_8_a9502c6_1285790588848_552114_2565" association="_16_8_a9502c6_1285791392215_474317_2791"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791362073_661606_2775" name="" memberEnd="_16_8_a9502c6_1285791362074_505320_2777 _16_8_a9502c6_1285791362074_456081_2776">
-          <ownedEnd xmi:id="_16_8_a9502c6_1285791362074_505320_2777" name="" visibility="private" type="_16_8_a9502c6_1285790572530_531390_2473" association="_16_8_a9502c6_1285791362073_661606_2775"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790572530_531390_2473" name="InterruptionDispatcher">
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285791362074_456081_2776" name="" visibility="private" type="_16_8_a9502c6_1285790588848_552114_2565" association="_16_8_a9502c6_1285791362073_661606_2775"/>
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285791876374_828005_2952" name="" visibility="private" type="_16_8_a9502c6_1285791635695_412155_2853" association="_16_8_a9502c6_1285791876374_70853_2951"/>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285790865888_717574_2659" name="blockInterruption" visibility="public">
-            <ownedParameter xmi:id="_16_8_a9502c6_1285790885446_623125_2661" name="i" visibility="public" type="_16_8_a9502c6_1285790643861_58865_2614"/>
-          </ownedOperation>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285790894544_835086_2662" name="executeInterruption" visibility="public">
-            <ownedParameter xmi:id="_16_8_a9502c6_1285790914715_711145_2664" name="i" visibility="public" type="_16_8_a9502c6_1285790643861_58865_2614"/>
-          </ownedOperation>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285789458672_8286_2280" name="DoorSensor">
-          <generalization xmi:id="_16_8_a9502c6_1285789563208_470448_2355" general="_16_8_a9502c6_1285789463026_419345_2326"/>
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285789698933_694935_2412" name="" visibility="private" type="_16_8_a9502c6_1285789668201_969749_2359" association="_16_8_a9502c6_1285789698932_118055_2410"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285789463026_419345_2326" name="Sensor" clientDependency="_16_8_a9502c6_1285791198786_965426_2759" isActive="true">
-          <interfaceRealization xmi:id="_16_8_a9502c6_1285791198786_965426_2759" name="" supplier="_16_8_a9502c6_1285791044965_802850_2695" client="_16_8_a9502c6_1285789463026_419345_2326" contract="_16_8_a9502c6_1285791044965_802850_2695"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791876374_70853_2951" name="" memberEnd="_16_8_a9502c6_1285791876375_69011_2953 _16_8_a9502c6_1285791876374_828005_2952">
-          <ownedEnd xmi:id="_16_8_a9502c6_1285791876375_69011_2953" name="" visibility="private" type="_16_8_a9502c6_1285790572530_531390_2473" association="_16_8_a9502c6_1285791876374_70853_2951"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285789668201_969749_2359" name="BuildingMonitor">
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285789689258_953370_2385" name="" visibility="private" type="_16_8_a9502c6_1285789456521_86980_2257" association="_16_8_a9502c6_1285789689258_170268_2384">
-            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_a9502c6_1285789776106_479195_2432" name="" value="50"/>
-            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_a9502c6_1285789776105_309888_2431" name="" value="50"/>
-          </ownedAttribute>
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285789695409_456935_2398" name="" visibility="private" type="_16_8_a9502c6_1285789460819_850929_2303" association="_16_8_a9502c6_1285789695409_597390_2397">
-            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_a9502c6_1285789766901_273960_2428" name="" value="200"/>
-            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_a9502c6_1285789766900_68116_2427" name="" value="200"/>
-          </ownedAttribute>
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285789698933_520996_2411" name="" visibility="private" type="_16_8_a9502c6_1285789458672_8286_2280" association="_16_8_a9502c6_1285789698932_118055_2410">
-            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_a9502c6_1285789789941_829569_2434" name="" value="30"/>
-            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_a9502c6_1285789789941_202991_2433" name="" value="30"/>
-          </ownedAttribute>
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285791008304_595994_2672" name="" visibility="private" type="_16_8_a9502c6_1285790570198_548778_2450" association="_16_8_a9502c6_1285791008303_476546_2671"/>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285790501105_498272_2439" name="startVerification" visibility="public">
-            <ownedParameter xmi:id="_16_8_a9502c6_1285790519927_227525_2443" name="" visibility="public" direction="return">
-              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
-            </ownedParameter>
-          </ownedOperation>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285790524948_684257_2444" name="findRoom" visibility="public">
-            <ownedParameter xmi:id="_16_8_a9502c6_1285790536292_139193_2447" name="" visibility="public" direction="return">
-              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
-            </ownedParameter>
-          </ownedOperation>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285789689258_170268_2384" name="" memberEnd="_16_8_a9502c6_1285789689258_953370_2385 _16_8_a9502c6_1285789689259_34914_2386"/>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790586691_173492_2542" name="VoiceSynthesizer">
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285791404024_561000_2818" name="" visibility="private" type="_16_8_a9502c6_1285790591459_230552_2588" association="_16_8_a9502c6_1285791404024_414993_2817"/>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285791486489_880103_2842" name="createCall" visibility="public"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285789695409_597390_2397" name="" memberEnd="_16_8_a9502c6_1285789695409_456935_2398 _16_8_a9502c6_1285789695409_627898_2399"/>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790570198_548778_2450" name="InterruptionAnalyzer" clientDependency="_16_8_a9502c6_1285791210501_767341_2770" isActive="true">
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285791016712_729235_2685" name="" visibility="private" type="_16_8_a9502c6_1285790572530_531390_2473" association="_16_8_a9502c6_1285791016712_722280_2684"/>
-          <interfaceRealization xmi:id="_16_8_a9502c6_1285791210501_767341_2770" name="" supplier="_16_8_a9502c6_1285791044965_802850_2695" client="_16_8_a9502c6_1285790570198_548778_2450" contract="_16_8_a9502c6_1285791044965_802850_2695"/>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285790613607_483486_2609" name="analizeInterruption" visibility="public">
-            <ownedParameter xmi:id="_16_8_a9502c6_1285790655831_775009_2633" name="i" visibility="public" type="_16_8_a9502c6_1285790643861_58865_2614"/>
-          </ownedOperation>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285790806087_41168_2634" name="configure" visibility="public"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285789456521_86980_2257" name="WindowSensor">
-          <generalization xmi:id="_16_8_a9502c6_1285789550465_943047_2349" general="_16_8_a9502c6_1285789463026_419345_2326"/>
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285789689259_34914_2386" name="" visibility="private" type="_16_8_a9502c6_1285789668201_969749_2359" association="_16_8_a9502c6_1285789689258_170268_2384"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790591459_230552_2588" name="Comunicator">
-          <ownedOperation xmi:id="_16_8_a9502c6_1285791551437_995097_2845" name="makeACall" visibility="public"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791407447_647782_2830" name="" memberEnd="_16_8_a9502c6_1285791407448_572844_2832 _16_8_a9502c6_1285791407447_572637_2831">
-          <ownedEnd xmi:id="_16_8_a9502c6_1285791407448_572844_2832" name="" visibility="private" type="_16_8_a9502c6_1285790588848_552114_2565" association="_16_8_a9502c6_1285791407447_647782_2830"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790583825_301728_2519" name="ControllerLights">
-          <ownedOperation xmi:id="_16_8_a9502c6_1285791466437_968208_2839" name="triggerLights" visibility="public"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285789698932_118055_2410" name="" memberEnd="_16_8_a9502c6_1285789698933_520996_2411 _16_8_a9502c6_1285789698933_694935_2412"/>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790588848_552114_2565" name="ComunicationManager">
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285791392215_648788_2792" name="" visibility="private" type="_16_8_a9502c6_1285790583825_301728_2519" association="_16_8_a9502c6_1285791392215_474317_2791"/>
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285791396012_229723_2805" name="" visibility="private" type="_16_8_a9502c6_1285790586691_173492_2542" association="_16_8_a9502c6_1285791396012_246482_2804"/>
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285791407447_572637_2831" name="" visibility="private" type="_16_8_a9502c6_1285790574640_185599_2496" association="_16_8_a9502c6_1285791407447_647782_2830"/>
-          <ownedOperation xmi:id="_16_8_a9502c6_1285791370327_241082_2784" name="realizeExternalAlert" visibility="public"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791404024_414993_2817" name="" memberEnd="_16_8_a9502c6_1285791404024_451608_2819 _16_8_a9502c6_1285791404024_561000_2818">
-          <ownedEnd xmi:id="_16_8_a9502c6_1285791404024_451608_2819" name="" visibility="private" type="_16_8_a9502c6_1285790586691_173492_2542" association="_16_8_a9502c6_1285791404024_414993_2817"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791016712_722280_2684" name="" memberEnd="_16_8_a9502c6_1285791016712_729235_2685 _16_8_a9502c6_1285791016712_928433_2686">
-          <ownedEnd xmi:id="_16_8_a9502c6_1285791016712_928433_2686" name="" visibility="private" type="_16_8_a9502c6_1285790570198_548778_2450" association="_16_8_a9502c6_1285791016712_722280_2684"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790574640_185599_2496" name="AudibleAlarmGenerator">
-          <ownedOperation xmi:id="_16_8_a9502c6_1285791586348_329185_2848" name="triggerAlarm" visibility="public"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791396012_246482_2804" name="" memberEnd="_16_8_a9502c6_1285791396012_229723_2805 _16_8_a9502c6_1285791396012_734683_2806">
-          <ownedEnd xmi:id="_16_8_a9502c6_1285791396012_734683_2806" name="" visibility="private" type="_16_8_a9502c6_1285790588848_552114_2565" association="_16_8_a9502c6_1285791396012_246482_2804"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285789460819_850929_2303" name="MovementDetector">
-          <generalization xmi:id="_16_8_a9502c6_1285789554473_830240_2352" general="_16_8_a9502c6_1285789463026_419345_2326"/>
-          <ownedAttribute xmi:id="_16_8_a9502c6_1285789695409_627898_2399" name="" visibility="private" type="_16_8_a9502c6_1285789668201_969749_2359" association="_16_8_a9502c6_1285789695409_597390_2397"/>
-        </packagedElement>
-        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791008303_476546_2671" name="" memberEnd="_16_8_a9502c6_1285791008304_987559_2673 _16_8_a9502c6_1285791008304_595994_2672">
-          <ownedEnd xmi:id="_16_8_a9502c6_1285791008304_987559_2673" name="" visibility="private" type="_16_8_a9502c6_1285789668201_969749_2359" association="_16_8_a9502c6_1285791008303_476546_2671"/>
-        </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285788174150_2547_2114" name="Battery change"/>
+    <packagedElement xmi:type="uml:Model" xmi:id="_16_8_a9502c6_1285786337582_840585_1480" name="System" viewpoint="">
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786191758_645032_1431" name="Checking Window Sensors"/>
+      <packagedElement xmi:type="uml:Actor" xmi:id="_16_8_a9502c6_1285785445032_746103_1425" name="Time"/>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285785452382_408996_1443" name="Checking Intruders">
+        <include xmi:id="_16_8_a9502c6_1285786425132_81854_1541" name="" visibility="public" addition="_16_8_a9502c6_1285786186990_691687_1419"/>
+        <include xmi:id="_16_8_a9502c6_1285786484793_276247_1547" name="" visibility="public" addition="_16_8_a9502c6_1285786191758_645032_1431"/>
+        <include xmi:id="_16_8_a9502c6_1285786488433_594654_1553" name="" visibility="public" addition="_16_8_a9502c6_1285786194305_646033_1443"/>
+        <extensionPoint xmi:id="_16_8_a9502c6_1285786523586_543519_1570" name="Intruder Detected" visibility="public"/>
+        <extensionPoint xmi:id="_16_8_a9502c6_1285786540377_372439_1580" name="Power Failed" visibility="public"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285791044965_802850_2695" name="Reactive">
-        <ownedOperation xmi:id="_16_8_a9502c6_1285791076854_470851_2737" name="hadChange" visibility="public">
-          <ownedParameter xmi:id="_16_8_a9502c6_1285791084802_449556_2740" name="" visibility="public" direction="return">
-            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
-          </ownedParameter>
-        </ownedOperation>
-        <ownedOperation xmi:id="_16_8_a9502c6_1285791084824_2294_2741" name="configure" visibility="public"/>
-        <ownedOperation xmi:id="_16_8_a9502c6_1285791092031_235448_2744" name="execute" visibility="public"/>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786196590_796501_1455" name="Fire Safety Actions">
+        <extend xmi:id="_16_8_a9502c6_1285786521835_557993_1569" name="" visibility="public" extendedCase="_16_8_a9502c6_1285785452382_408996_1443" extensionLocation="_16_8_a9502c6_1285786523586_543519_1570"/>
       </packagedElement>
-      <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285791048797_15689_2717" name="Interruptible">
-        <ownedOperation xmi:id="_16_8_a9502c6_1285791100637_732570_2747" name="createInterruption" visibility="public">
-          <ownedParameter xmi:id="_16_8_a9502c6_1285791123229_399817_2751" name="" visibility="public" type="_16_8_a9502c6_1285790643861_58865_2614" direction="return"/>
-        </ownedOperation>
-        <ownedOperation xmi:id="_16_8_a9502c6_1285791139400_297812_2752" name="throwInterruption" visibility="public">
-          <ownedParameter xmi:id="_16_8_a9502c6_1285791181779_177949_2756" name="i" visibility="public" type="_16_8_a9502c6_1285790643861_58865_2614"/>
-        </ownedOperation>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786198591_28574_1467" name="Power Backup">
+        <extend xmi:id="_16_8_a9502c6_1285786537982_310667_1579" name="" visibility="public" extendedCase="_16_8_a9502c6_1285785452382_408996_1443" extensionLocation="_16_8_a9502c6_1285786540377_372439_1580"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786194305_646033_1443" name="Checklin Movement Sensors"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285785463012_402721_1457" name="" memberEnd="_16_8_a9502c6_1285785463012_804503_1458 _16_8_a9502c6_1285785463012_131147_1459" navigableOwnedEnd="_16_8_a9502c6_1285785463012_804503_1458 _16_8_a9502c6_1285785463012_131147_1459">
+        <ownedEnd xmi:id="_16_8_a9502c6_1285785463012_804503_1458" name="" visibility="private" type="_16_8_a9502c6_1285785452382_408996_1443" association="_16_8_a9502c6_1285785463012_402721_1457"/>
+        <ownedEnd xmi:id="_16_8_a9502c6_1285785463012_131147_1459" name="" visibility="private" type="_16_8_a9502c6_1285785445032_746103_1425" association="_16_8_a9502c6_1285785463012_402721_1457"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786186990_691687_1419" name="Checking Door Sensors"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Model" xmi:id="_16_8_a9502c6_1285786763066_412926_1607" name="Intruder Detected" viewpoint="">
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786796487_735713_1661" name="Find the intruder's position"/>
+      <packagedElement xmi:type="uml:Actor" xmi:id="_16_8_a9502c6_1285786779127_700546_1619" name="System"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285786888588_34623_1736" name="" memberEnd="_16_8_a9502c6_1285786888589_90993_1738 _16_8_a9502c6_1285786888588_347404_1737" navigableOwnedEnd="_16_8_a9502c6_1285786888588_347404_1737 _16_8_a9502c6_1285786888589_90993_1738">
+        <ownedEnd xmi:id="_16_8_a9502c6_1285786888588_347404_1737" name="" visibility="private" type="_16_8_a9502c6_1285786803787_733925_1676" association="_16_8_a9502c6_1285786888588_34623_1736"/>
+        <ownedEnd xmi:id="_16_8_a9502c6_1285786888589_90993_1738" name="" visibility="private" type="_16_8_a9502c6_1285786779127_700546_1619" association="_16_8_a9502c6_1285786888588_34623_1736"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285786918626_884309_1811" name="" memberEnd="_16_8_a9502c6_1285786918626_391838_1812 _16_8_a9502c6_1285786918626_960731_1813" navigableOwnedEnd="_16_8_a9502c6_1285786918626_391838_1812 _16_8_a9502c6_1285786918626_960731_1813">
+        <ownedEnd xmi:id="_16_8_a9502c6_1285786918626_391838_1812" name="" visibility="private" type="_16_8_a9502c6_1285786784929_251995_1640" association="_16_8_a9502c6_1285786918626_884309_1811"/>
+        <ownedEnd xmi:id="_16_8_a9502c6_1285786918626_960731_1813" name="" visibility="private" type="_16_8_a9502c6_1285786808533_695617_1706" association="_16_8_a9502c6_1285786918626_884309_1811"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285786899782_553243_1780" name="" memberEnd="_16_8_a9502c6_1285786899783_284779_1781 _16_8_a9502c6_1285786899783_900036_1782" navigableOwnedEnd="_16_8_a9502c6_1285786899783_284779_1781 _16_8_a9502c6_1285786899783_900036_1782">
+        <ownedEnd xmi:id="_16_8_a9502c6_1285786899783_284779_1781" name="" visibility="private" type="_16_8_a9502c6_1285786808533_695617_1706" association="_16_8_a9502c6_1285786899782_553243_1780"/>
+        <ownedEnd xmi:id="_16_8_a9502c6_1285786899783_900036_1782" name="" visibility="private" type="_16_8_a9502c6_1285786779127_700546_1619" association="_16_8_a9502c6_1285786899782_553243_1780"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285786885335_134551_1723" name="" memberEnd="_16_8_a9502c6_1285786885336_597498_1724 _16_8_a9502c6_1285786885336_135126_1725" navigableOwnedEnd="_16_8_a9502c6_1285786885336_597498_1724 _16_8_a9502c6_1285786885336_135126_1725">
+        <ownedEnd xmi:id="_16_8_a9502c6_1285786885336_597498_1724" name="" visibility="private" type="_16_8_a9502c6_1285786796487_735713_1661" association="_16_8_a9502c6_1285786885335_134551_1723"/>
+        <ownedEnd xmi:id="_16_8_a9502c6_1285786885336_135126_1725" name="" visibility="private" type="_16_8_a9502c6_1285786779127_700546_1619" association="_16_8_a9502c6_1285786885335_134551_1723"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786806153_629602_1691" name="Trigger the audible alarm"/>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786808533_695617_1706" name="Call the police"/>
+      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786803787_733925_1676" name="Turn on the lights"/>
+      <packagedElement xmi:type="uml:Actor" xmi:id="_16_8_a9502c6_1285786784929_251995_1640" name="Police"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285786891695_30906_1749" name="" memberEnd="_16_8_a9502c6_1285786891695_47540_1750 _16_8_a9502c6_1285786891696_556768_1751" navigableOwnedEnd="_16_8_a9502c6_1285786891695_47540_1750 _16_8_a9502c6_1285786891696_556768_1751">
+        <ownedEnd xmi:id="_16_8_a9502c6_1285786891695_47540_1750" name="" visibility="private" type="_16_8_a9502c6_1285786806153_629602_1691" association="_16_8_a9502c6_1285786891695_30906_1749"/>
+        <ownedEnd xmi:id="_16_8_a9502c6_1285786891696_556768_1751" name="" visibility="private" type="_16_8_a9502c6_1285786779127_700546_1619" association="_16_8_a9502c6_1285786891695_30906_1749"/>
       </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Component" xmi:id="_16_8_a9502c6_1285787584822_350360_2015" name="External Comunicator" clientDependency="_16_8_a9502c6_1285788151460_816226_2110">
@@ -233,244 +227,223 @@
         <end xmi:id="_16_9_a9502c6_1287598759030_470341_3237" role="_16_9_a9502c6_1287598707287_772889_3192"/>
       </ownedConnector>
       <interfaceRealization xmi:id="_16_8_a9502c6_1285788151460_816226_2110" name="" supplier="_16_8_a9502c6_1285788151449_460929_2108" client="_16_8_a9502c6_1285787584822_350360_2015" contract="_16_8_a9502c6_1285788151449_460929_2108"/>
-      <packagedElement xmi:type="uml:StateMachine" xmi:id="_16_9_a9502c6_1288301178528_880655_1680" name="External Comunicator" isReentrant="true">
-        <region xmi:id="_16_9_a9502c6_1288301178529_778907_1681" name="" visibility="public">
-          <subvertex xmi:type="uml:State" xmi:id="_16_9_a9502c6_1288301200068_269380_1704" name="1" visibility="public"/>
-          <subvertex xmi:type="uml:State" xmi:id="_16_9_a9502c6_1288301202125_614620_1718" name="2" visibility="public"/>
-          <subvertex xmi:type="uml:Pseudostate" xmi:id="_16_9_a9502c6_1288301205582_68813_1732" name="" visibility="public"/>
-          <subvertex xmi:type="uml:Pseudostate" xmi:id="_16_9_a9502c6_1288304281366_879864_2112" name="" visibility="public" kind="choice"/>
-          <subvertex xmi:type="uml:FinalState" xmi:id="_16_9_a9502c6_1288305628799_310481_2125" name="" visibility="public"/>
-          <transition xmi:id="_16_9_a9502c6_1288301207068_511248_1736" name="" visibility="public" source="_16_9_a9502c6_1288301205582_68813_1732" target="_16_9_a9502c6_1288301200068_269380_1704">
-            <effect xmi:type="uml:FunctionBehavior" xmi:id="_16_9_a9502c6_1288306861261_847858_2139" name="aaa" isReentrant="true">
-              <body>aaa</body>
-            </effect>
-            <trigger xmi:id="_16_9_a9502c6_1288308068864_47555_2143" name="" visibility="public" event="_16_9_a9502c6_1288308068864_90130_2142"/>
-          </transition>
-          <transition xmi:id="_16_9_a9502c6_1288304284690_909660_2114" name="" visibility="public" source="_16_9_a9502c6_1288301200068_269380_1704" target="_16_9_a9502c6_1288304281366_879864_2112" guard="_16_9_a9502c6_1288306717290_832512_2132">
-            <ownedRule xmi:id="_16_9_a9502c6_1288306717290_832512_2132" name="unnamed1">
-              <specification xmi:type="uml:OpaqueExpression" xmi:id="_16_9_a9502c6_1288306717290_353144_2133" name="">
-                <body>xxx</body>
-              </specification>
-            </ownedRule>
-          </transition>
-          <transition xmi:id="_16_9_a9502c6_1288304293967_831669_2122" name="" visibility="public" source="_16_9_a9502c6_1288304281366_879864_2112" target="_16_9_a9502c6_1288301202125_614620_1718"/>
-          <transition xmi:id="_16_9_a9502c6_1288305631691_951292_2129" name="" visibility="public" source="_16_9_a9502c6_1288301202125_614620_1718" target="_16_9_a9502c6_1288305628799_310481_2125"/>
-        </region>
-      </packagedElement>
     </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="magicdraw_uml_standard_profile_v_0001" name="UML Standard Profile">
-      <ownedComment xmi:id="_be00301_1078843546940_242228_131" body="UML Standard Profile contains UML metamodel (metaclasses without properties and associations), StandardProfileL2 and StandardProfileL3 from UML specification, Standard UML stereotypes defined in annex C of UML specification.&#xA;Profile also includes validation suites for UML model correctness and completeness checking, and stereotypes used by MagicDraw internally." annotatedElement="magicdraw_uml_standard_profile_v_0001"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Collaboration" xmi:id="_16_9_a9502c6_1287594985418_743684_2831" name="DS">
-      <ownedBehavior xmi:type="uml:Interaction" xmi:id="_16_9_a9502c6_1287594985417_452058_2830" name="DS" isReentrant="true">
-        <ownedAttribute xmi:id="_16_9_a9502c6_1287594988344_230155_2856" name="cm" visibility="private" type="_16_8_a9502c6_1285790588848_552114_2565"/>
-        <lifeline xmi:id="_16_9_a9502c6_1287594988342_3444_2855" name="" visibility="public" represents="_16_9_a9502c6_1287594988344_230155_2856"/>
-      </ownedBehavior>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Model" xmi:id="_16_8_a9502c6_1285786337582_840585_1480" name="System" viewpoint="">
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786196590_796501_1455" name="Fire Safety Actions">
-        <extend xmi:id="_16_8_a9502c6_1285786521835_557993_1569" name="" visibility="public" extendedCase="_16_8_a9502c6_1285785452382_408996_1443" extensionLocation="_16_8_a9502c6_1285786523586_543519_1570"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285785463012_402721_1457" name="" memberEnd="_16_8_a9502c6_1285785463012_804503_1458 _16_8_a9502c6_1285785463012_131147_1459" navigableOwnedEnd="_16_8_a9502c6_1285785463012_804503_1458 _16_8_a9502c6_1285785463012_131147_1459">
-        <ownedEnd xmi:id="_16_8_a9502c6_1285785463012_804503_1458" name="" visibility="private" type="_16_8_a9502c6_1285785452382_408996_1443" association="_16_8_a9502c6_1285785463012_402721_1457"/>
-        <ownedEnd xmi:id="_16_8_a9502c6_1285785463012_131147_1459" name="" visibility="private" type="_16_8_a9502c6_1285785445032_746103_1425" association="_16_8_a9502c6_1285785463012_402721_1457"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786194305_646033_1443" name="Checklin Movement Sensors"/>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786198591_28574_1467" name="Power Backup">
-        <extend xmi:id="_16_8_a9502c6_1285786537982_310667_1579" name="" visibility="public" extendedCase="_16_8_a9502c6_1285785452382_408996_1443" extensionLocation="_16_8_a9502c6_1285786540377_372439_1580"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Actor" xmi:id="_16_8_a9502c6_1285785445032_746103_1425" name="Time"/>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786186990_691687_1419" name="Checking Door Sensors"/>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285785452382_408996_1443" name="Checking Intruders">
-        <include xmi:id="_16_8_a9502c6_1285786425132_81854_1541" name="" visibility="public" addition="_16_8_a9502c6_1285786186990_691687_1419"/>
-        <include xmi:id="_16_8_a9502c6_1285786484793_276247_1547" name="" visibility="public" addition="_16_8_a9502c6_1285786191758_645032_1431"/>
-        <include xmi:id="_16_8_a9502c6_1285786488433_594654_1553" name="" visibility="public" addition="_16_8_a9502c6_1285786194305_646033_1443"/>
-        <extensionPoint xmi:id="_16_8_a9502c6_1285786523586_543519_1570" name="Intruder Detected" visibility="public"/>
-        <extensionPoint xmi:id="_16_8_a9502c6_1285786540377_372439_1580" name="Power Failed" visibility="public"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786191758_645032_1431" name="Checking Window Sensors"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Model" xmi:id="_16_8_a9502c6_1285787033463_718327_1850" name="Power Failed" viewpoint="">
-      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285787141382_501016_1942" name="" memberEnd="_16_8_a9502c6_1285787141382_186111_1943 _16_8_a9502c6_1285787141383_260073_1944" navigableOwnedEnd="_16_8_a9502c6_1285787141382_186111_1943 _16_8_a9502c6_1285787141383_260073_1944">
-        <ownedEnd xmi:id="_16_8_a9502c6_1285787141382_186111_1943" name="" visibility="private" type="_16_8_a9502c6_1285787091188_930630_1904" association="_16_8_a9502c6_1285787141382_501016_1942"/>
-        <ownedEnd xmi:id="_16_8_a9502c6_1285787141383_260073_1944" name="" visibility="private" type="_16_8_a9502c6_1285787084647_632312_1862" association="_16_8_a9502c6_1285787141382_501016_1942"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Actor" xmi:id="_16_8_a9502c6_1285787084647_632312_1862" name="Circuit Power Monitor"/>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285787100697_367393_1919" name="Alternate to backup"/>
-      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285787150773_629163_1955" name="" memberEnd="_16_8_a9502c6_1285787150773_521511_1956 _16_8_a9502c6_1285787150774_138987_1957" navigableOwnedEnd="_16_8_a9502c6_1285787150773_521511_1956 _16_8_a9502c6_1285787150774_138987_1957">
-        <ownedEnd xmi:id="_16_8_a9502c6_1285787150773_521511_1956" name="" visibility="private" type="_16_8_a9502c6_1285787087188_890798_1883" association="_16_8_a9502c6_1285787150773_629163_1955"/>
-        <ownedEnd xmi:id="_16_8_a9502c6_1285787150774_138987_1957" name="" visibility="private" type="_16_8_a9502c6_1285787100697_367393_1919" association="_16_8_a9502c6_1285787150773_629163_1955"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Actor" xmi:id="_16_8_a9502c6_1285787087188_890798_1883" name="Alarm System"/>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285787091188_930630_1904" name="Stop the alarm system">
-        <include xmi:id="_16_8_a9502c6_1285787138495_808086_1934" name="" visibility="public" addition="_16_8_a9502c6_1285787100697_367393_1919"/>
-      </packagedElement>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Model" xmi:id="_16_8_a9502c6_1285786763066_412926_1607" name="Intruder Detected" viewpoint="">
-      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285786899782_553243_1780" name="" memberEnd="_16_8_a9502c6_1285786899783_900036_1782 _16_8_a9502c6_1285786899783_284779_1781" navigableOwnedEnd="_16_8_a9502c6_1285786899783_284779_1781 _16_8_a9502c6_1285786899783_900036_1782">
-        <ownedEnd xmi:id="_16_8_a9502c6_1285786899783_284779_1781" name="" visibility="private" type="_16_8_a9502c6_1285786808533_695617_1706" association="_16_8_a9502c6_1285786899782_553243_1780"/>
-        <ownedEnd xmi:id="_16_8_a9502c6_1285786899783_900036_1782" name="" visibility="private" type="_16_8_a9502c6_1285786779127_700546_1619" association="_16_8_a9502c6_1285786899782_553243_1780"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786796487_735713_1661" name="Find the intruder's position"/>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786808533_695617_1706" name="Call the police"/>
-      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285786891695_30906_1749" name="" memberEnd="_16_8_a9502c6_1285786891695_47540_1750 _16_8_a9502c6_1285786891696_556768_1751" navigableOwnedEnd="_16_8_a9502c6_1285786891695_47540_1750 _16_8_a9502c6_1285786891696_556768_1751">
-        <ownedEnd xmi:id="_16_8_a9502c6_1285786891695_47540_1750" name="" visibility="private" type="_16_8_a9502c6_1285786806153_629602_1691" association="_16_8_a9502c6_1285786891695_30906_1749"/>
-        <ownedEnd xmi:id="_16_8_a9502c6_1285786891696_556768_1751" name="" visibility="private" type="_16_8_a9502c6_1285786779127_700546_1619" association="_16_8_a9502c6_1285786891695_30906_1749"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285786918626_884309_1811" name="" memberEnd="_16_8_a9502c6_1285786918626_960731_1813 _16_8_a9502c6_1285786918626_391838_1812" navigableOwnedEnd="_16_8_a9502c6_1285786918626_391838_1812 _16_8_a9502c6_1285786918626_960731_1813">
-        <ownedEnd xmi:id="_16_8_a9502c6_1285786918626_391838_1812" name="" visibility="private" type="_16_8_a9502c6_1285786784929_251995_1640" association="_16_8_a9502c6_1285786918626_884309_1811"/>
-        <ownedEnd xmi:id="_16_8_a9502c6_1285786918626_960731_1813" name="" visibility="private" type="_16_8_a9502c6_1285786808533_695617_1706" association="_16_8_a9502c6_1285786918626_884309_1811"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786806153_629602_1691" name="Trigger the audible alarm"/>
-      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285786888588_34623_1736" name="" memberEnd="_16_8_a9502c6_1285786888588_347404_1737 _16_8_a9502c6_1285786888589_90993_1738" navigableOwnedEnd="_16_8_a9502c6_1285786888588_347404_1737 _16_8_a9502c6_1285786888589_90993_1738">
-        <ownedEnd xmi:id="_16_8_a9502c6_1285786888588_347404_1737" name="" visibility="private" type="_16_8_a9502c6_1285786803787_733925_1676" association="_16_8_a9502c6_1285786888588_34623_1736"/>
-        <ownedEnd xmi:id="_16_8_a9502c6_1285786888589_90993_1738" name="" visibility="private" type="_16_8_a9502c6_1285786779127_700546_1619" association="_16_8_a9502c6_1285786888588_34623_1736"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285786885335_134551_1723" name="" memberEnd="_16_8_a9502c6_1285786885336_597498_1724 _16_8_a9502c6_1285786885336_135126_1725" navigableOwnedEnd="_16_8_a9502c6_1285786885336_597498_1724 _16_8_a9502c6_1285786885336_135126_1725">
-        <ownedEnd xmi:id="_16_8_a9502c6_1285786885336_597498_1724" name="" visibility="private" type="_16_8_a9502c6_1285786796487_735713_1661" association="_16_8_a9502c6_1285786885335_134551_1723"/>
-        <ownedEnd xmi:id="_16_8_a9502c6_1285786885336_135126_1725" name="" visibility="private" type="_16_8_a9502c6_1285786779127_700546_1619" association="_16_8_a9502c6_1285786885335_134551_1723"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Actor" xmi:id="_16_8_a9502c6_1285786779127_700546_1619" name="System"/>
-      <packagedElement xmi:type="uml:UseCase" xmi:id="_16_8_a9502c6_1285786803787_733925_1676" name="Turn on the lights"/>
-      <packagedElement xmi:type="uml:Actor" xmi:id="_16_8_a9502c6_1285786784929_251995_1640" name="Police"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Component" xmi:id="_16_8_a9502c6_1285787577550_103705_1988" name="Sensor Manager" clientDependency="_16_8_a9502c6_1285788032628_250778_2092 _16_8_a9502c6_1285788207348_991708_2126" isActive="true">
-      <ownedAttribute xmi:id="_16_9_a9502c6_1287598051619_600029_2931" name="" visibility="private" type="_16_8_a9502c6_1285789460819_850929_2303" aggregation="composite">
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_a9502c6_1287598196390_406960_2993" name="" value="200"/>
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_a9502c6_1287598196389_330885_2992" name="" value="200"/>
-      </ownedAttribute>
-      <ownedAttribute xmi:id="_16_9_a9502c6_1287598076961_802208_2946" name="" visibility="private" type="_16_8_a9502c6_1285789458672_8286_2280" aggregation="composite">
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_a9502c6_1287598223937_360665_2997" name="" value="30"/>
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_a9502c6_1287598223937_891487_2996" name="" value="30"/>
-      </ownedAttribute>
-      <ownedAttribute xmi:id="_16_9_a9502c6_1287598086877_561293_2961" name="" visibility="private" type="_16_8_a9502c6_1285789456521_86980_2257" aggregation="composite">
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_a9502c6_1287598208838_562808_2995" name="" value="50"/>
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_a9502c6_1287598208838_192221_2994" name="" value="50"/>
-      </ownedAttribute>
-      <ownedAttribute xmi:id="_16_9_a9502c6_1287598146674_826051_2976" name="" visibility="private" type="_16_8_a9502c6_1285789668201_969749_2359" aggregation="composite">
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_9_a9502c6_1287598232484_89692_2999" name="" value="1"/>
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_9_a9502c6_1287598232483_844882_2998" name="" value="1"/>
-      </ownedAttribute>
-      <ownedConnector xmi:id="_16_9_a9502c6_1287598256833_522758_3004" name="" visibility="public" kind="assembly">
-        <end xmi:id="_16_9_a9502c6_1287598256833_824808_3005" role="_16_9_a9502c6_1287598051619_600029_2931"/>
-        <end xmi:id="_16_9_a9502c6_1287598256833_396333_3006" role="_16_9_a9502c6_1287598146674_826051_2976"/>
-      </ownedConnector>
-      <ownedConnector xmi:id="_16_9_a9502c6_1287598260816_129059_3013" name="" visibility="public" kind="assembly">
-        <end xmi:id="_16_9_a9502c6_1287598260816_513813_3014" role="_16_9_a9502c6_1287598086877_561293_2961"/>
-        <end xmi:id="_16_9_a9502c6_1287598260817_909079_3015" role="_16_9_a9502c6_1287598146674_826051_2976"/>
-      </ownedConnector>
-      <ownedConnector xmi:id="_16_9_a9502c6_1287598264448_790235_3022" name="" visibility="public" kind="assembly">
-        <end xmi:id="_16_9_a9502c6_1287598264448_696998_3023" role="_16_9_a9502c6_1287598076961_802208_2946"/>
-        <end xmi:id="_16_9_a9502c6_1287598264448_865115_3024" role="_16_9_a9502c6_1287598146674_826051_2976"/>
-      </ownedConnector>
-      <interfaceRealization xmi:id="_16_8_a9502c6_1285788032628_250778_2092" name="" supplier="_16_8_a9502c6_1285788032612_607509_2090" client="_16_8_a9502c6_1285787577550_103705_1988" contract="_16_8_a9502c6_1285788032612_607509_2090"/>
-      <packagedElement xmi:type="uml:Usage" xmi:id="_16_8_a9502c6_1285788207348_991708_2126" name="" supplier="_16_8_a9502c6_1285788064191_388584_2096" client="_16_8_a9502c6_1285787577550_103705_1988"/>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Package" xmi:id="_16_8_a9502c6_1285789197836_400859_2240" name="Utility Elements">
-      <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_a9502c6_1285791931288_826069_2966" name="IntruderDetected">
-        <generalization xmi:id="_16_8_a9502c6_1285791974466_639218_3008" general="_16_8_a9502c6_1285790643861_58865_2614"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_a9502c6_1285790643861_58865_2614" name="Interruption"/>
-      <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285792001430_798855_3014" name="Clock">
-        <ownedAttribute xmi:id="_16_8_a9502c6_1285792486923_660877_3074" name="kind" visibility="private" type="_16_8_a9502c6_1285792511364_212250_3078">
-          <defaultValue xmi:type="uml:InstanceValue" xmi:id="_16_8_a9502c6_1285792554924_794390_3102" name="" instance="_16_8_a9502c6_1285792526426_879691_3098"/>
-        </ownedAttribute>
-        <ownedAttribute xmi:id="_16_8_a9502c6_1285792565077_712451_3103" name="currentTime" visibility="private" type="_16_8_a9502c6_1285792425826_855949_3046"/>
-        <ownedAttribute xmi:id="_16_8_a9502c6_1285792572729_278131_3105" name="timerTime" visibility="private" type="_16_8_a9502c6_1285792425826_855949_3046"/>
-        <ownedOperation xmi:id="_16_8_a9502c6_1285792406028_42518_3036" name="start" visibility="public"/>
-        <ownedOperation xmi:id="_16_8_a9502c6_1285792409298_138475_3039" name="reset" visibility="public"/>
-        <ownedOperation xmi:id="_16_8_a9502c6_1285792411900_446248_3042" name="getTime" visibility="public">
-          <ownedParameter xmi:id="_16_8_a9502c6_1285792449706_418701_3066" name="" visibility="public" type="_16_8_a9502c6_1285792425826_855949_3046" direction="return"/>
+    <packagedElement xmi:type="uml:Package" xmi:id="_16_8_a9502c6_1285789156495_193456_2201" name="System Alarm">
+      <packageImport xmi:id="_16_8_a9502c6_1285789213446_592115_2251" importedPackage="_16_8_a9502c6_1285789197836_400859_2240"/>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285791044965_802850_2695" name="Reactive">
+        <ownedOperation xmi:id="_16_8_a9502c6_1285791076854_470851_2737" name="hadChange" visibility="public">
+          <ownedParameter xmi:id="_16_8_a9502c6_1285791084802_449556_2740" name="" visibility="public" direction="return">
+            <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+          </ownedParameter>
         </ownedOperation>
-        <ownedOperation xmi:id="_16_8_a9502c6_1285792449730_13152_3067" name="timer" visibility="public">
-          <ownedParameter xmi:id="_16_8_a9502c6_1285792464790_550096_3069" name="value" visibility="public" type="_16_8_a9502c6_1285792425826_855949_3046"/>
+        <ownedOperation xmi:id="_16_8_a9502c6_1285791084824_2294_2741" name="configure" visibility="public"/>
+        <ownedOperation xmi:id="_16_8_a9502c6_1285791092031_235448_2744" name="execute" visibility="public"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_8_a9502c6_1285789183175_661346_2226" name="Circuit Monitor">
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285791639090_620523_2876" name="BackupExecutor">
+          <ownedOperation xmi:id="_16_8_a9502c6_1285791773184_442055_2905" name="desactivateSystem" visibility="public"/>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285791784442_409663_2908" name="reactivateSystem" visibility="public"/>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285791798533_736950_2911" name="realizeExchange" visibility="public"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791807417_680599_2918" name="" memberEnd="_16_8_a9502c6_1285791807417_881764_2919 _16_8_a9502c6_1285791807418_13633_2920">
+          <ownedEnd xmi:id="_16_8_a9502c6_1285791807418_13633_2920" name="" visibility="private" type="_16_8_a9502c6_1285791635695_412155_2853" association="_16_8_a9502c6_1285791807417_680599_2918"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285791635695_412155_2853" name="CircuitAnalizer" clientDependency="_16_8_a9502c6_1285791818964_333641_2929 _16_8_a9502c6_1285791846655_885647_2933" isActive="true">
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285791807417_881764_2919" name="" visibility="private" type="_16_8_a9502c6_1285791639090_620523_2876" association="_16_8_a9502c6_1285791807417_680599_2918"/>
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285791866096_629865_2939" name="" visibility="private" type="_16_8_a9502c6_1285790570198_548778_2450" association="_16_8_a9502c6_1285791866095_704286_2938"/>
+          <interfaceRealization xmi:id="_16_8_a9502c6_1285791818964_333641_2929" name="" supplier="_16_8_a9502c6_1285791044965_802850_2695" client="_16_8_a9502c6_1285791635695_412155_2853" contract="_16_8_a9502c6_1285791044965_802850_2695"/>
+          <interfaceRealization xmi:id="_16_8_a9502c6_1285791846655_885647_2933" name="" supplier="_16_8_a9502c6_1285791048797_15689_2717" client="_16_8_a9502c6_1285791635695_412155_2853" contract="_16_8_a9502c6_1285791048797_15689_2717"/>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285791703039_248423_2897" name="informChange" visibility="public"/>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285791709276_344892_2900" name="executeExchange" visibility="public"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791866095_704286_2938" name="" memberEnd="_16_8_a9502c6_1285791866096_110346_2940 _16_8_a9502c6_1285791866096_629865_2939">
+          <ownedEnd xmi:id="_16_8_a9502c6_1285791866096_110346_2940" name="" visibility="private" type="_16_8_a9502c6_1285791635695_412155_2853" association="_16_8_a9502c6_1285791866095_704286_2938"/>
+        </packagedElement>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Interface" xmi:id="_16_8_a9502c6_1285791048797_15689_2717" name="Interruptible">
+        <ownedOperation xmi:id="_16_8_a9502c6_1285791100637_732570_2747" name="createInterruption" visibility="public">
+          <ownedParameter xmi:id="_16_8_a9502c6_1285791123229_399817_2751" name="" visibility="public" type="_16_8_a9502c6_1285790643861_58865_2614" direction="return"/>
         </ownedOperation>
-        <ownedOperation xmi:id="_16_8_a9502c6_1285792472497_49932_3070" name="getTimerTime" visibility="public">
-          <ownedParameter xmi:id="_16_8_a9502c6_1285792482037_820857_3073" name="" visibility="public" type="_16_8_a9502c6_1285792425826_855949_3046" direction="return"/>
+        <ownedOperation xmi:id="_16_8_a9502c6_1285791139400_297812_2752" name="throwInterruption" visibility="public">
+          <ownedParameter xmi:id="_16_8_a9502c6_1285791181779_177949_2756" name="i" visibility="public" type="_16_8_a9502c6_1285790643861_58865_2614"/>
         </ownedOperation>
       </packagedElement>
-      <packagedElement xmi:type="uml:Enumeration" xmi:id="_16_8_a9502c6_1285790835860_178026_2639" name="InterruptEnum">
-        <ownedLiteral xmi:id="_16_8_a9502c6_1285791915233_564451_2960" name="allow"/>
-        <ownedLiteral xmi:id="_16_8_a9502c6_1285791917943_507011_2962" name="deny"/>
+      <packagedElement xmi:type="uml:Package" xmi:id="_16_8_a9502c6_1285789171814_433252_2212" name="Monitor">
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285789668201_969749_2359" name="BuildingMonitor">
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285789689258_953370_2385" name="" visibility="private" type="_16_8_a9502c6_1285789456521_86980_2257" association="_16_8_a9502c6_1285789689258_170268_2384">
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_a9502c6_1285789776106_479195_2432" name="" value="50"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_a9502c6_1285789776105_309888_2431" name="" value="50"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285789695409_456935_2398" name="" visibility="private" type="_16_8_a9502c6_1285789460819_850929_2303" association="_16_8_a9502c6_1285789695409_597390_2397">
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_a9502c6_1285789766901_273960_2428" name="" value="200"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_a9502c6_1285789766900_68116_2427" name="" value="200"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285789698933_520996_2411" name="" visibility="private" type="_16_8_a9502c6_1285789458672_8286_2280" association="_16_8_a9502c6_1285789698932_118055_2410">
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_16_8_a9502c6_1285789789941_829569_2434" name="" value="30"/>
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_16_8_a9502c6_1285789789941_202991_2433" name="" value="30"/>
+          </ownedAttribute>
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285791008304_595994_2672" name="" visibility="private" type="_16_8_a9502c6_1285790570198_548778_2450" association="_16_8_a9502c6_1285791008303_476546_2671"/>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285790501105_498272_2439" name="startVerification" visibility="public">
+            <ownedParameter xmi:id="_16_8_a9502c6_1285790519927_227525_2443" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Boolean"/>
+            </ownedParameter>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285790524948_684257_2444" name="findRoom" visibility="public">
+            <ownedParameter xmi:id="_16_8_a9502c6_1285790536292_139193_2447" name="" visibility="public" direction="return">
+              <type xmi:type="uml:PrimitiveType" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#Integer"/>
+            </ownedParameter>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285789463026_419345_2326" name="Sensor" clientDependency="_16_8_a9502c6_1285791198786_965426_2759" isActive="true">
+          <interfaceRealization xmi:id="_16_8_a9502c6_1285791198786_965426_2759" name="" supplier="_16_8_a9502c6_1285791044965_802850_2695" client="_16_8_a9502c6_1285789463026_419345_2326" contract="_16_8_a9502c6_1285791044965_802850_2695"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285789456521_86980_2257" name="WindowSensor">
+          <generalization xmi:id="_16_8_a9502c6_1285789550465_943047_2349" general="_16_8_a9502c6_1285789463026_419345_2326"/>
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285789689259_34914_2386" name="" visibility="private" type="_16_8_a9502c6_1285789668201_969749_2359" association="_16_8_a9502c6_1285789689258_170268_2384"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791876374_70853_2951" name="" memberEnd="_16_8_a9502c6_1285791876374_828005_2952 _16_8_a9502c6_1285791876375_69011_2953">
+          <ownedEnd xmi:id="_16_8_a9502c6_1285791876375_69011_2953" name="" visibility="private" type="_16_8_a9502c6_1285790572530_531390_2473" association="_16_8_a9502c6_1285791876374_70853_2951"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790588848_552114_2565" name="ComunicationManager">
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285791392215_648788_2792" name="" visibility="private" type="_16_8_a9502c6_1285790583825_301728_2519" association="_16_8_a9502c6_1285791392215_474317_2791"/>
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285791396012_229723_2805" name="" visibility="private" type="_16_8_a9502c6_1285790586691_173492_2542" association="_16_8_a9502c6_1285791396012_246482_2804"/>
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285791407447_572637_2831" name="" visibility="private" type="_16_8_a9502c6_1285790574640_185599_2496" association="_16_8_a9502c6_1285791407447_647782_2830"/>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285791370327_241082_2784" name="realizeExternalAlert" visibility="public"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791362073_661606_2775" name="" memberEnd="_16_8_a9502c6_1285791362074_505320_2777 _16_8_a9502c6_1285791362074_456081_2776">
+          <ownedEnd xmi:id="_16_8_a9502c6_1285791362074_505320_2777" name="" visibility="private" type="_16_8_a9502c6_1285790572530_531390_2473" association="_16_8_a9502c6_1285791362073_661606_2775"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285789698932_118055_2410" name="" memberEnd="_16_8_a9502c6_1285789698933_520996_2411 _16_8_a9502c6_1285789698933_694935_2412"/>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791404024_414993_2817" name="" memberEnd="_16_8_a9502c6_1285791404024_451608_2819 _16_8_a9502c6_1285791404024_561000_2818">
+          <ownedEnd xmi:id="_16_8_a9502c6_1285791404024_451608_2819" name="" visibility="private" type="_16_8_a9502c6_1285790586691_173492_2542" association="_16_8_a9502c6_1285791404024_414993_2817"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791392215_474317_2791" name="" memberEnd="_16_8_a9502c6_1285791392215_648788_2792 _16_8_a9502c6_1285791392215_340073_2793">
+          <ownedEnd xmi:id="_16_8_a9502c6_1285791392215_340073_2793" name="" visibility="private" type="_16_8_a9502c6_1285790588848_552114_2565" association="_16_8_a9502c6_1285791392215_474317_2791"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791008303_476546_2671" name="" memberEnd="_16_8_a9502c6_1285791008304_595994_2672 _16_8_a9502c6_1285791008304_987559_2673">
+          <ownedEnd xmi:id="_16_8_a9502c6_1285791008304_987559_2673" name="" visibility="private" type="_16_8_a9502c6_1285789668201_969749_2359" association="_16_8_a9502c6_1285791008303_476546_2671"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791016712_722280_2684" name="" memberEnd="_16_8_a9502c6_1285791016712_928433_2686 _16_8_a9502c6_1285791016712_729235_2685">
+          <ownedEnd xmi:id="_16_8_a9502c6_1285791016712_928433_2686" name="" visibility="private" type="_16_8_a9502c6_1285790570198_548778_2450" association="_16_8_a9502c6_1285791016712_722280_2684"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790586691_173492_2542" name="VoiceSynthesizer">
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285791404024_561000_2818" name="" visibility="private" type="_16_8_a9502c6_1285790591459_230552_2588" association="_16_8_a9502c6_1285791404024_414993_2817"/>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285791486489_880103_2842" name="createCall" visibility="public"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791396012_246482_2804" name="" memberEnd="_16_8_a9502c6_1285791396012_229723_2805 _16_8_a9502c6_1285791396012_734683_2806">
+          <ownedEnd xmi:id="_16_8_a9502c6_1285791396012_734683_2806" name="" visibility="private" type="_16_8_a9502c6_1285790588848_552114_2565" association="_16_8_a9502c6_1285791396012_246482_2804"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285789689258_170268_2384" name="" memberEnd="_16_8_a9502c6_1285789689258_953370_2385 _16_8_a9502c6_1285789689259_34914_2386"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790574640_185599_2496" name="AudibleAlarmGenerator">
+          <ownedOperation xmi:id="_16_8_a9502c6_1285791586348_329185_2848" name="triggerAlarm" visibility="public"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285789695409_597390_2397" name="" memberEnd="_16_8_a9502c6_1285789695409_456935_2398 _16_8_a9502c6_1285789695409_627898_2399"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790570198_548778_2450" name="InterruptionAnalyzer" clientDependency="_16_8_a9502c6_1285791210501_767341_2770" isActive="true">
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285791016712_729235_2685" name="" visibility="private" type="_16_8_a9502c6_1285790572530_531390_2473" association="_16_8_a9502c6_1285791016712_722280_2684"/>
+          <interfaceRealization xmi:id="_16_8_a9502c6_1285791210501_767341_2770" name="" supplier="_16_8_a9502c6_1285791044965_802850_2695" client="_16_8_a9502c6_1285790570198_548778_2450" contract="_16_8_a9502c6_1285791044965_802850_2695"/>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285790613607_483486_2609" name="analizeInterruption" visibility="public">
+            <ownedParameter xmi:id="_16_8_a9502c6_1285790655831_775009_2633" name="i" visibility="public" type="_16_8_a9502c6_1285790643861_58865_2614"/>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285790806087_41168_2634" name="configure" visibility="public"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790583825_301728_2519" name="ControllerLights">
+          <ownedOperation xmi:id="_16_8_a9502c6_1285791466437_968208_2839" name="triggerLights" visibility="public"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Association" xmi:id="_16_8_a9502c6_1285791407447_647782_2830" name="" memberEnd="_16_8_a9502c6_1285791407448_572844_2832 _16_8_a9502c6_1285791407447_572637_2831">
+          <ownedEnd xmi:id="_16_8_a9502c6_1285791407448_572844_2832" name="" visibility="private" type="_16_8_a9502c6_1285790588848_552114_2565" association="_16_8_a9502c6_1285791407447_647782_2830"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790572530_531390_2473" name="InterruptionDispatcher">
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285791362074_456081_2776" name="" visibility="private" type="_16_8_a9502c6_1285790588848_552114_2565" association="_16_8_a9502c6_1285791362073_661606_2775"/>
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285791876374_828005_2952" name="" visibility="private" type="_16_8_a9502c6_1285791635695_412155_2853" association="_16_8_a9502c6_1285791876374_70853_2951"/>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285790865888_717574_2659" name="blockInterruption" visibility="public">
+            <ownedParameter xmi:id="_16_8_a9502c6_1285790885446_623125_2661" name="i" visibility="public" type="_16_8_a9502c6_1285790643861_58865_2614"/>
+          </ownedOperation>
+          <ownedOperation xmi:id="_16_8_a9502c6_1285790894544_835086_2662" name="executeInterruption" visibility="public">
+            <ownedParameter xmi:id="_16_8_a9502c6_1285790914715_711145_2664" name="i" visibility="public" type="_16_8_a9502c6_1285790643861_58865_2614"/>
+          </ownedOperation>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285790591459_230552_2588" name="Comunicator">
+          <ownedOperation xmi:id="_16_8_a9502c6_1285791551437_995097_2845" name="makeACall" visibility="public"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285789460819_850929_2303" name="MovementDetector">
+          <generalization xmi:id="_16_8_a9502c6_1285789554473_830240_2352" general="_16_8_a9502c6_1285789463026_419345_2326"/>
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285789695409_627898_2399" name="" visibility="private" type="_16_8_a9502c6_1285789668201_969749_2359" association="_16_8_a9502c6_1285789695409_597390_2397"/>
+        </packagedElement>
+        <packagedElement xmi:type="uml:Class" xmi:id="_16_8_a9502c6_1285789458672_8286_2280" name="DoorSensor">
+          <generalization xmi:id="_16_8_a9502c6_1285789563208_470448_2355" general="_16_8_a9502c6_1285789463026_419345_2326"/>
+          <ownedAttribute xmi:id="_16_8_a9502c6_1285789698933_694935_2412" name="" visibility="private" type="_16_8_a9502c6_1285789668201_969749_2359" association="_16_8_a9502c6_1285789698932_118055_2410"/>
+        </packagedElement>
       </packagedElement>
-      <packagedElement xmi:type="uml:Enumeration" xmi:id="_16_8_a9502c6_1285792511364_212250_3078" name="ClockKind">
-        <ownedLiteral xmi:id="_16_8_a9502c6_1285792526426_879691_3098" name="absolut"/>
-        <ownedLiteral xmi:id="_16_8_a9502c6_1285792530073_132195_3100" name="relative"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:Signal" xmi:id="_16_8_a9502c6_1285791936144_46337_2987" name="PowerFailed">
-        <generalization xmi:id="_16_8_a9502c6_1285791977190_352464_3011" general="_16_8_a9502c6_1285790643861_58865_2614"/>
-      </packagedElement>
-      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_16_8_a9502c6_1285792425826_855949_3046" name="TimeUnit"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:CallEvent" xmi:id="_16_9_a9502c6_1288308068864_90130_2142" name="" operation="_16_8_a9502c6_1285791798533_736950_2911"/>
-    <profileApplication xmi:id="_16_8beta_62a020a_1256807755193_508228_378profileApplicationData">
-      <eAnnotations xmi:id="_HvI6leLqEd-XZ7m4J93xdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.StandardProfileL3.profile.uml#_HvITyuLqEd-XZ7m4J93xdw"/>
+    <profileApplication xmi:id="_16_9_a9502c6_1287586976024_156568_2150profileApplicationData">
+      <eAnnotations xmi:id="_xUBAoOhZEd-ML7BnRRxtaA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UTP_RT.profile.uml#_xT4eWuhZEd-ML7BnRRxtaA"/>
       </eAnnotations>
-      <appliedProfile href="UML_Standard_Profile.StandardProfileL3.profile.uml#_16_8beta_62a020a_1256807755193_508228_378"/>
-    </profileApplication>
-    <profileApplication xmi:id="_11_5_f720368_1159529670215_231387_1profileApplicationData">
-      <eAnnotations xmi:id="_HvL9seLqEd-XZ7m4J93xdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Validation_Profile.profile.uml#_HvC0JeLqEd-XZ7m4J93xdw"/>
-      </eAnnotations>
-      <appliedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml#_11_5_f720368_1159529670215_231387_1"/>
-    </profileApplication>
-    <profileApplication xmi:id="_11_5_be00301_1153310565718_226811_161profileApplicationData">
-      <eAnnotations xmi:id="_HvPBAeLqEd-XZ7m4J93xdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_HvHsQuLqEd-XZ7m4J93xdw"/>
-      </eAnnotations>
-      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_11_5_be00301_1153310565718_226811_161"/>
+      <appliedProfile href="UTP_RT.profile.uml#_16_9_a9502c6_1287586976024_156568_2150"/>
     </profileApplication>
     <profileApplication xmi:id="_16_6_8f90291_1254846042821_86742_517profileApplicationData">
-      <eAnnotations xmi:id="_HvTSceLqEd-XZ7m4J93xdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_HvEo_uLqEd-XZ7m4J93xdw"/>
+      <eAnnotations xmi:id="_xUI8cehZEd-ML7BnRRxtaA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_xT6S8uhZEd-ML7BnRRxtaA"/>
       </eAnnotations>
       <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.Traceability_customization.profile.uml#_16_6_8f90291_1254846042821_86742_517"/>
     </profileApplication>
+    <profileApplication xmi:id="_11_5_be00301_1153310565718_226811_161profileApplicationData">
+      <eAnnotations xmi:id="_xULYsehZEd-ML7BnRRxtaA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_xT5Ff-hZEd-ML7BnRRxtaA"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.DSL_Customization.profile.uml#_11_5_be00301_1153310565718_226811_161"/>
+    </profileApplication>
+    <profileApplication xmi:id="_11_5_f720368_1159529670215_231387_1profileApplicationData">
+      <eAnnotations xmi:id="_xUNN4ehZEd-ML7BnRRxtaA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.Validation_Profile.profile.uml#_xT67BehZEd-ML7BnRRxtaA"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.Validation_Profile.profile.uml#_11_5_f720368_1159529670215_231387_1"/>
+    </profileApplication>
     <profileApplication xmi:id="_be00301_1073394351331_445580_2profileApplicationData">
-      <eAnnotations xmi:id="_HvWVweLqEd-XZ7m4J93xdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_HvFQA-LqEd-XZ7m4J93xdw"/>
+      <eAnnotations xmi:id="_xUPDEehZEd-ML7BnRRxtaA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_xT2pQehZEd-ML7BnRRxtaA"/>
       </eAnnotations>
       <appliedProfile href="UML_Standard_Profile.MagicDraw_Profile.profile.uml#_be00301_1073394351331_445580_2"/>
     </profileApplication>
+    <profileApplication xmi:id="_16_8beta_62a020a_1256807755193_508228_378profileApplicationData">
+      <eAnnotations xmi:id="_xURfUehZEd-ML7BnRRxtaA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.StandardProfileL3.profile.uml#_xT5FVehZEd-ML7BnRRxtaA"/>
+      </eAnnotations>
+      <appliedProfile href="UML_Standard_Profile.StandardProfileL3.profile.uml#_16_8beta_62a020a_1256807755193_508228_378"/>
+    </profileApplication>
     <profileApplication xmi:id="_16_8_a9502c6_1285786570909_430712_1587profileApplicationData">
-      <eAnnotations xmi:id="_HvZZEOLqEd-XZ7m4J93xdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="Real_Time_Design_Profile.profile.uml#_HvIT3OLqEd-XZ7m4J93xdw"/>
+      <eAnnotations xmi:id="_xUT7kOhZEd-ML7BnRRxtaA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="Real_Time_Design_Profile.profile.uml#_xT5sxuhZEd-ML7BnRRxtaA"/>
       </eAnnotations>
       <appliedProfile href="Real_Time_Design_Profile.profile.uml#_16_8_a9502c6_1285786570909_430712_1587"/>
     </profileApplication>
     <profileApplication xmi:id="_9_0_be00301_1108050582343_527400_10847profileApplicationData">
-      <eAnnotations xmi:id="_HvdqgOLqEd-XZ7m4J93xdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.StandardProfileL2.profile.uml#_HvCM_uLqEd-XZ7m4J93xdw"/>
+      <eAnnotations xmi:id="_xUWX0ehZEd-ML7BnRRxtaA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="UML_Standard_Profile.StandardProfileL2.profile.uml#_xT6TkOhZEd-ML7BnRRxtaA"/>
       </eAnnotations>
       <appliedProfile href="UML_Standard_Profile.StandardProfileL2.profile.uml#_9_0_be00301_1108050582343_527400_10847"/>
     </profileApplication>
-    <profileApplication xmi:id="_16_9_a9502c6_1287586976024_156568_2150profileApplicationData">
-      <eAnnotations xmi:id="_HvgGweLqEd-XZ7m4J93xdw" source="http://www.eclipse.org/uml2/2.0.0/UML">
-        <references xmi:type="ecore:EPackage" href="UTP_RT.profile.uml#_HvBlouLqEd-XZ7m4J93xdw"/>
-      </eAnnotations>
-      <appliedProfile href="UTP_RT.profile.uml#_16_9_a9502c6_1287586976024_156568_2150"/>
-    </profileApplication>
   </uml:Model>
-  <MagicDrawProfile:useCaseModel xmi:id="_HwzHROLqEd-XZ7m4J93xdw" base_Model="_16_8_a9502c6_1285786763066_412926_1607"/>
-  <MagicDrawProfile:useCaseModel xmi:id="_HwzHReLqEd-XZ7m4J93xdw" base_Model="_16_8_a9502c6_1285787033463_718327_1850"/>
-  <MagicDrawProfile:useCaseModel xmi:id="_HwzuUOLqEd-XZ7m4J93xdw" base_Model="_16_8_a9502c6_1285786337582_840585_1480"/>
-  <MagicDrawProfile:auxiliaryResource xmi:id="_Hw508uLqEd-XZ7m4J93xdw" base_Element="magicdraw_uml_standard_profile_v_0001" base_Package="magicdraw_uml_standard_profile_v_0001"/>
-  <RealTimeDesignProfile:ReactiveStructure xmi:id="_Hw6cAeLqEd-XZ7m4J93xdw" base_StructuredClassifier="_16_8_a9502c6_1285787586689_958942_2040"/>
-  <RealTimeDesignProfile:ReactiveStructure xmi:id="_Hw6cAuLqEd-XZ7m4J93xdw" base_StructuredClassifier="_16_8_a9502c6_1285790570198_548778_2450"/>
-  <RealTimeDesignProfile:ReactiveStructure xmi:id="_Hw6cA-LqEd-XZ7m4J93xdw" base_StructuredClassifier="_16_8_a9502c6_1285791635695_412155_2853"/>
-  <RealTimeDesignProfile:ReactiveStructure xmi:id="_Hw6cBOLqEd-XZ7m4J93xdw" base_StructuredClassifier="_16_8_a9502c6_1285787577550_103705_1988"/>
-  <RealTimeDesignProfile:ReactiveStructure xmi:id="_Hw7DEOLqEd-XZ7m4J93xdw" base_StructuredClassifier="_16_8_a9502c6_1285787588642_984630_2065"/>
-  <RealTimeDesignProfile:ReactiveStructure xmi:id="_Hw7DEeLqEd-XZ7m4J93xdw" base_StructuredClassifier="_16_8_a9502c6_1285789463026_419345_2326"/>
-  <RealTimeDesignProfile:ExternalElement xmi:id="_Hw7DEuLqEd-XZ7m4J93xdw" base_Element="_16_8_a9502c6_1285786784929_251995_1640"/>
-  <RealTimeDesignProfile:ExternalResult xmi:id="_Hw7DE-LqEd-XZ7m4J93xdw" base_Association="_16_8_a9502c6_1285786918626_884309_1811"/>
-  <RealTimeDesignProfile:Architecture xmi:id="_Hw7DFOLqEd-XZ7m4J93xdw" base_StructuredClassifier="_16_8_a9502c6_1285787586689_958942_2040"/>
-  <RealTimeDesignProfile:Architecture xmi:id="_Hw7DFeLqEd-XZ7m4J93xdw" base_StructuredClassifier="_16_8_a9502c6_1285790570198_548778_2450"/>
-  <RealTimeDesignProfile:Architecture xmi:id="_Hw7qIOLqEd-XZ7m4J93xdw" base_StructuredClassifier="_16_8_a9502c6_1285790572530_531390_2473"/>
-  <RealTimeDesignProfile:TimeElement xmi:id="_Hw8RMOLqEd-XZ7m4J93xdw" base_Element="_16_8_a9502c6_1285792001430_798855_3014"/>
-  <RealTimeDesignProfile:TimeElement xmi:id="_Hw8RMeLqEd-XZ7m4J93xdw" base_Element="_16_8_a9502c6_1285785445032_746103_1425"/>
-  <RealTimeDesignProfile:Interruption xmi:id="_Hw8RMuLqEd-XZ7m4J93xdw" base_Element="_16_8_a9502c6_1285786196590_796501_1455"/>
-  <RealTimeDesignProfile:Interruption xmi:id="_Hw8RM-LqEd-XZ7m4J93xdw" base_Element="_16_8_a9502c6_1285786198591_28574_1467"/>
-  <UTPRT:SUTRT xmi:id="_Hw84QOLqEd-XZ7m4J93xdw" base_Classifier="_16_8_a9502c6_1285787584822_350360_2015"/>
-  <UTPRT:SUTRT xmi:id="_Hw9fUOLqEd-XZ7m4J93xdw" base_Property="_16_9_a9502c6_1287598676781_846094_3147"/>
+  <UTPRT:SUTRT xmi:id="_xVPvsOhZEd-ML7BnRRxtaA" base_Classifier="_16_8_a9502c6_1285787584822_350360_2015"/>
+  <UTPRT:SUTRT xmi:id="_xVQ90OhZEd-ML7BnRRxtaA" base_Property="_16_9_a9502c6_1287598676781_846094_3147"/>
+  <UTPRT:SUTRT xmi:id="_xVQ90ehZEd-ML7BnRRxtaA" base_Classifier="_16_8_a9502c6_1285790588848_552114_2565"/>
+  <MagicDrawProfile:useCaseModel xmi:id="_xV_9oOhZEd-ML7BnRRxtaA" base_Model="_16_8_a9502c6_1285786763066_412926_1607"/>
+  <MagicDrawProfile:useCaseModel xmi:id="_xV_9oehZEd-ML7BnRRxtaA" base_Model="_16_8_a9502c6_1285786337582_840585_1480"/>
+  <MagicDrawProfile:useCaseModel xmi:id="_xV_9ouhZEd-ML7BnRRxtaA" base_Model="_16_8_a9502c6_1285787033463_718327_1850"/>
+  <MagicDrawProfile:auxiliaryResource xmi:id="_xWGrUOhZEd-ML7BnRRxtaA" base_Element="magicdraw_uml_standard_profile_v_0001" base_Package="magicdraw_uml_standard_profile_v_0001"/>
+  <RealTimeDesignProfile:ReactiveStructure xmi:id="_xW9m8OhZEd-ML7BnRRxtaA" base_StructuredClassifier="_16_8_a9502c6_1285787588642_984630_2065"/>
+  <RealTimeDesignProfile:ReactiveStructure xmi:id="_xW9m8ehZEd-ML7BnRRxtaA" base_StructuredClassifier="_16_8_a9502c6_1285789463026_419345_2326"/>
+  <RealTimeDesignProfile:ReactiveStructure xmi:id="_xW9m8uhZEd-ML7BnRRxtaA" base_StructuredClassifier="_16_8_a9502c6_1285787577550_103705_1988"/>
+  <RealTimeDesignProfile:ReactiveStructure xmi:id="_xW9m8-hZEd-ML7BnRRxtaA" base_StructuredClassifier="_16_8_a9502c6_1285791635695_412155_2853"/>
+  <RealTimeDesignProfile:ReactiveStructure xmi:id="_xW9m9OhZEd-ML7BnRRxtaA" base_StructuredClassifier="_16_8_a9502c6_1285787586689_958942_2040"/>
+  <RealTimeDesignProfile:ReactiveStructure xmi:id="_xW9m9ehZEd-ML7BnRRxtaA" base_StructuredClassifier="_16_8_a9502c6_1285790570198_548778_2450"/>
+  <RealTimeDesignProfile:Interruption xmi:id="_xW9m9uhZEd-ML7BnRRxtaA" base_Element="_16_8_a9502c6_1285786198591_28574_1467"/>
+  <RealTimeDesignProfile:Interruption xmi:id="_xW-OAOhZEd-ML7BnRRxtaA" base_Element="_16_8_a9502c6_1285786196590_796501_1455"/>
+  <RealTimeDesignProfile:Architecture xmi:id="_xW-OAehZEd-ML7BnRRxtaA" base_StructuredClassifier="_16_8_a9502c6_1285790572530_531390_2473"/>
+  <RealTimeDesignProfile:Architecture xmi:id="_xW-OAuhZEd-ML7BnRRxtaA" base_StructuredClassifier="_16_8_a9502c6_1285787586689_958942_2040"/>
+  <RealTimeDesignProfile:Architecture xmi:id="_xW-OA-hZEd-ML7BnRRxtaA" base_StructuredClassifier="_16_8_a9502c6_1285790570198_548778_2450"/>
+  <RealTimeDesignProfile:ExternalElement xmi:id="_xW-OBOhZEd-ML7BnRRxtaA" base_Element="_16_8_a9502c6_1285786784929_251995_1640"/>
+  <RealTimeDesignProfile:TimeElement xmi:id="_xW-OBehZEd-ML7BnRRxtaA" base_Element="_16_8_a9502c6_1285792001430_798855_3014"/>
+  <RealTimeDesignProfile:TimeElement xmi:id="_xW-OBuhZEd-ML7BnRRxtaA" base_Element="_16_8_a9502c6_1285785445032_746103_1425"/>
+  <RealTimeDesignProfile:ExternalResult xmi:id="_xW-1EOhZEd-ML7BnRRxtaA" base_Association="_16_8_a9502c6_1285786918626_884309_1811"/>
 </xmi:XMI>
