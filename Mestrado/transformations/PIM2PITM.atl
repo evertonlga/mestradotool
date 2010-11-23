@@ -34,10 +34,8 @@ rule Coment {
         annotatedElement <- s.annotatedElement)
 	do{
 		if (s.getBody() = 'start'){
-			--'PIM2PITM'.println();
-			--thisModule.DataModel.packagedElement.toString().println();
 			thisModule.DataModel <- UML2!Model->allInstances()->select(m | m.toString() = 'OUT!Data')->first();
-			self.createTestPackage();
+				self.createTestPackage();
 		}
 	}
 }
