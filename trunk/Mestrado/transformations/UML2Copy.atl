@@ -41,7 +41,6 @@ rule Model {
 	do{
 		thisModule.RTD_Profile<- UML2!Profile.allInstances()->select(e | e.name = 'Real Time Design Profile')->first();
 		thisModule.UTP_RT_Profile<- UML2!Profile.allInstances()->select(e | e.name = 'UTP RT')->first();
-		
 		for (p in UML2!Profile.allInstances()){		
 			t.applyProfile(p);
 		}
@@ -881,40 +880,6 @@ rule Port {
         protocol <- s.protocol)
 }
 
-rule State {
-    from s : UML2!"uml::State" (
-		if s.oclIsTypeOf(UML2!"uml::State") then
-			thisModule.inElements->includes(s)
-		else false endif)
-    to t : UML2!"uml::State" (
-        __xmiID__ <- s.__xmiID__,
-        name <- s.name,
-        visibility <- s.visibility,
-        isLeaf <- s.isLeaf,
-        eAnnotations <- s.eAnnotations,
-        ownedComment <- s.ownedComment,
-        clientDependency <- s.clientDependency,
-        nameExpression <- s.nameExpression,
-        elementImport <- s.elementImport,
-        packageImport <- s.packageImport,
-        ownedRule <- s.ownedRule,
-        submachine <- s.submachine,
-        connection <- s.connection,
-        connectionPoint <- s.connectionPoint,
-        redefinedState <- s.redefinedState,
-        stateInvariant <- s.stateInvariant,
-        entry <- s.entry,
-        exit <- s.exit,
-        doActivity <- s.doActivity,
-        deferrableTrigger <- s.deferrableTrigger,
-        region <- s.region)
-	
-	do{
-		for (st in s.getAppliedStereotypes()){
-			self.aplyStereotype(t, st);
-		}
-	}
-}
 
 rule ConnectionPointReference {
     from s : UML2!"uml::ConnectionPointReference" (thisModule.inElements->includes(s))
@@ -4422,6 +4387,41 @@ rule Property {
         subsettedProperty <- s.subsettedProperty,
         association <- s.association,
         qualifier <- s.qualifier)
+	
+	do{
+		for (st in s.getAppliedStereotypes()){
+			self.aplyStereotype(t, st);
+		}
+	}
+}
+
+rule State {
+    from s : UML2!"uml::State" (
+		if s.oclIsTypeOf(UML2!"uml::State") then
+			thisModule.inElements->includes(s)
+		else false endif)
+    to t : UML2!"uml::State" (
+        __xmiID__ <- s.__xmiID__,
+        name <- s.name,
+        visibility <- s.visibility,
+        isLeaf <- s.isLeaf,
+        eAnnotations <- s.eAnnotations,
+        ownedComment <- s.ownedComment,
+        clientDependency <- s.clientDependency,
+        nameExpression <- s.nameExpression,
+        elementImport <- s.elementImport,
+        packageImport <- s.packageImport,
+        ownedRule <- s.ownedRule,
+        submachine <- s.submachine,
+        connection <- s.connection,
+        connectionPoint <- s.connectionPoint,
+        redefinedState <- s.redefinedState,
+        stateInvariant <- s.stateInvariant,
+        entry <- s.entry,
+        exit <- s.exit,
+        doActivity <- s.doActivity,
+        deferrableTrigger <- s.deferrableTrigger,
+        region <- s.region)
 	
 	do{
 		for (st in s.getAppliedStereotypes()){
