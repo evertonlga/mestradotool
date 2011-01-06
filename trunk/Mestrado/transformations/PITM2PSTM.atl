@@ -1,0 +1,140 @@
+module PITM2PSTM;
+
+create OUT : C_AbstractSyntax from IN : UML2, ProfileRTD : UML2, ProfileUTP_RT: UML2;
+
+helper def : RTD_Profile : UML2!Profile = '';
+
+helper def : UTP_RT_Profile : UML2!Profile = '';
+
+rule pack {
+	from tPack : UML2!Package (tPack.name = 'TestPackage') 
+	to cFile: C_AbstractSyntax!File
+	
+	do{
+		thisModule.RTD_Profile<- UML2!Profile.allInstances()->select(e | e.name = 'Real Time Design Profile')->first();
+		thisModule.UTP_RT_Profile<- UML2!Profile.allInstances()->select(e | e.name = 'UTP RT')->first();
+		
+--		for (e in tPack.packagedElement){
+--			if (e.oclIsTypeOf(UML2!Class) and e.getAppliedStereotypes()->includes(thisModule.UTP_RT_Profile.getOwnedStereotypes()->select(str | str.name = 'Test Context RT')->first())){
+--				e.name.println();
+--				e.getAppliedStereotypes()->includes(thisModule.UTP_RT_Profile.getOwnedStereotypes()->select(str | str.name = 'Test Context RT')->first()).toString().println();
+--			}
+--		}
+	}
+}
+
+rule testContext{
+	from c: UML2!Class (c.getAppliedStereotypes()->includes(UML2!Profile.allInstances()->select(e | e.name = 'UTP RT')->first().getOwnedStereotypes()->select(str | str.name = 'Test Context RT')->first()))
+	to vst: C_AbstractSyntax!ExternalDeclaration(
+		functionDefinition <- fd_vst),
+	
+	fd_vst: C_AbstractSyntax!FunctionDefinition(
+		declarationSpecifiers <- dcs_vst,
+		functionDeclarator <- fdc_vst,
+		compoundStatement <- cst_vst),
+		
+	cst_vst: C_AbstractSyntax!CompoundStatement(
+		expression <- es_vst),
+	
+	es_vst: C_AbstractSyntax!ExpressionStatement(
+		expression <- ae_vts),
+		
+	ae_vts: C_AbstractSyntax!AssignmentExpression(
+		postfixExpression <- pfe_vts),
+	
+	pfe_vts: C_AbstractSyntax!PostfixExpression(
+		identifier <- 'vTestConfiguration'),
+		
+	dcs_vst: C_AbstractSyntax!DeclarationSpecifier(
+		typeSpecifier <- tsf_vst),
+		
+	tsf_vst: C_AbstractSyntax!TypeSpecifier(
+		type <- 'void'),
+	
+	fdc_vst: C_AbstractSyntax!FunctionDeclarator(
+		name <- 'vStartTest',
+		parameters <- Set{pd_vst}),
+		
+	pd_vst: C_AbstractSyntax!ParameterDeclaration(
+		declarationSpecifiers <- dcsST_vst),
+		
+	dcsST_vst: C_AbstractSyntax!DeclarationSpecifier(
+		typeSpecifier <- tsST_vst),
+	
+	tsST_vst: C_AbstractSyntax!TypeSpecifier(
+		type <- 'void'),
+		
+	cf: C_AbstractSyntax!ExternalDeclaration(
+		functionDefinition <- fd),
+		
+	fd: C_AbstractSyntax!FunctionDefinition(
+		declarationSpecifiers <- dcs,
+		functionDeclarator <- fdc,
+		compoundStatement <- cst),
+	
+	dcs: C_AbstractSyntax!DeclarationSpecifier(
+		storageClassSpecifier <- scs,
+		typeSpecifier <- tsf
+	),
+	
+	scs: C_AbstractSyntax!StorageClassSpecifier(
+		name <- 'static'),
+	
+	tsf: C_AbstractSyntax!TypeSpecifier(
+		type <- 'void'),
+	
+	fdc: C_AbstractSyntax!FunctionDeclarator(
+		name <- 'vTestContext',
+		parameters <- Set{pd}),
+	
+	pd: C_AbstractSyntax!ParameterDeclaration(
+		declarationSpecifiers <- dcsST,
+		pointer <- p1,
+		directDeclarator <- ddcST),
+	
+	dcsST: C_AbstractSyntax!DeclarationSpecifier(
+		typeSpecifier <- tsST),
+	
+	tsST: C_AbstractSyntax!TypeSpecifier(
+		type <- 'void'),
+	
+	p1: C_AbstractSyntax!Pointer,
+		
+	ddcST: C_AbstractSyntax!DirectDeclarator(
+		identifier <- 'pvParameters'),
+		
+	cst: C_AbstractSyntax!CompoundStatement(
+		declaration <- Set{dcl_TC},
+		statement <- Set{forSt}),
+--		pointer <- 
+--		directDeclarator
+--		pointer
+--		directDeclarator
+--		pointer
+--		directDeclarator),
+	
+	dcl_TC: C_AbstractSyntax!DeclarationSpecifier(
+		typeSpecifier <- tsChar),
+	
+	tsChar: C_AbstractSyntax!TypeSpecifier(
+		type <- 'char'),
+	
+	forSt: C_AbstractSyntax!ForStatement(
+		compoundStatement <- forComp),
+	
+	forComp: C_AbstractSyntax!CompoundStatement(
+		expression <- Set{arb_expr}),
+	
+	arb_expr: C_AbstractSyntax!ExpressionStatement(
+		expression <- ass_arb),
+	
+	ass_arb: C_AbstractSyntax!AssignmentExpression(
+		postfixExpression <- pfe_arb),
+	
+	pfe_arb: C_AbstractSyntax!PostfixExpression(
+		identifier <- 'xArbiter')
+		
+	do{
+		'kkkk'.println();
+	}
+}
