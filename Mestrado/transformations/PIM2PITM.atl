@@ -80,7 +80,7 @@ rule createTestPackage(){
 		self.createScheduler(tPack);
 		self.createTimer(tPack);
 		self.createTestContext(tPack);
-		UML2!StateMachine->allInstancesFrom('IN')->first().toString().println();
+		--UML2!StateMachine->allInstancesFrom('IN')->first().toString().println();
 		self.testCaseGeneration(UML2!StateMachine->allInstances()->select(s | s.name = 'Teste 2')->first(), tPack);
 		 
 	}	
@@ -499,7 +499,7 @@ rule createRealTimeOpsInterface(pack: UML2!Package){
 	to int: UML2!Interface(
 		name <- 'RealTimeOperations',
 		ownedAttribute <- Set{iit},
-		ownedOperation <- Set{sts, intr}),
+		ownedOperation <- Set{sts, isIn, intr}),
 	
 	iit: UML2!Property(
 		name <- 'interruptInterferenceTime',
@@ -511,6 +511,17 @@ rule createRealTimeOpsInterface(pack: UML2!Package){
 			
 	sn: UML2!Parameter(
 		type <- thisModule.StringType),
+		
+	isIn: UML2!Operation(
+		name <- 'isInState',
+		ownedParameter <- Set{sii, rtb}),
+			
+	sii: UML2!Parameter(
+		type <- thisModule.StringType),
+		
+	rtb: UML2!Parameter(
+		direction <- #return,
+		type <- thisModule.booleanType),
 		
 	intr: UML2!Operation(
 		name <- 'interrupt',
@@ -664,6 +675,8 @@ rule testCaseGeneration (sm: UML2!StateMachine, pack: UML2!Package){
 	)
 	
 	do{
+		trans->collect(s | s.source).toString().println();
+		trans->collect(s | s.target).toString().println();
 		thisModule.transitions <- trans;
 		thisModule.collabTest <- col;
 		self.generate(transBeg, pack);
@@ -673,11 +686,14 @@ rule testCaseGeneration (sm: UML2!StateMachine, pack: UML2!Package){
 rule generate(ini: UML2!Transition, pack: UML2!Package){
 	using{
 		next: UML2!Transition = '';
+		opSetTo: UML2!Operation = UML2!Operation->allInstances()->select(o | o.name = 'setToState')->first();
+		opIsIn: UML2!Operation = UML2!Operation->allInstances()->select(o | o.name = 'isInState')->first();
 	}
 	to
 	int: UML2!Interaction(
 		lifeline <- Set{llTx, llSut},
-		fragment <- Set{},
+		fragment <- Set{},--mos1, mos2, mis1, mis2},
+		message <- Set{},--mst, min},
 		name <- 'testCase'+ thisModule.numberTC.toString(),
 		ownedAttribute <- Set{propSut, propTx}
 	),
@@ -694,13 +710,122 @@ rule generate(ini: UML2!Transition, pack: UML2!Package){
 		
 	propSut: UML2!Property(
 		visibility <- #private,
-		type <- thisModule.SubSUT)
+		type <- thisModule.SubSUT),
 		
+	mst: UML2!Message(
+		sendEvent <- mos1,
+		receiveEvent <- mos2),
+	
+	mos1: UML2!MessageOccurrenceSpecification( 
+		covered <- llTx,
+		message <- mst
+	),
+	
+	mos2: UML2!MessageOccurrenceSpecification( 
+		covered <- llSut,
+		message <- mst,
+		event <- ce
+	),
+	
+	ce: UML2!CallEvent(
+		operation <- opSetTo
+	),
+	
+	min: UML2!Message(
+		sendEvent <- mis1,
+		receiveEvent <- mis2),
+	
+	mis1: UML2!MessageOccurrenceSpecification( 
+		covered <- llTx,
+		message <- min
+	),
+	
+	mis2: UML2!MessageOccurrenceSpecification( 
+		covered <- llSut,
+		message <- min,
+		event <- ceis
+	),
+	
+	ceis: UML2!CallEvent(
+		operation <- opIsIn
+	),
+	
+	mR: UML2!Message(
+		sendEvent <- mR1,
+		receiveEvent <- mR2,
+		name <- 'true',
+		messageSort <- #reply), --UML2!MessageSort.getByName('Reply'),
+	
+	mR1: UML2!MessageOccurrenceSpecification( 
+		covered <- llSut,
+		message <- mR
+	),
+	
+	mR2: UML2!MessageOccurrenceSpecification( 
+		covered <- llTx,
+		message <- mR,
+		event <- ceR
+	),
+	
+	ceR: UML2!CallEvent(
+		--operation <- opIsIn
+	)
+	
 	do{
+		opIsIn.toString().println();
+		int.fragment <- int.fragment->including(mos1)->including(mos2)->including(mis1)->including(mis2)->including(mR1)->including(mR2); 
+		int.message <- int.message->including(mst)->including(min)->including(mR);
 		thisModule.numberTC <- thisModule.numberTC + 1;
-		if (thisModule.transitions.size() > 0)	
+		if (ini.source.oclIsKindOf(UML2!Pseudostate)){
+			'Entrou no IF'.println();
+			self.createOpaqueExpression(ini, mst, 'INI');
+			self.createOpaqueExpressionIsIn(ini, min, 'INI');
+		}else{
+			self.createOpaqueExpression(ini, mst, '');
+			self.createOpaqueExpressionIsIn(ini, min, '');
+		}
+		if (thisModule.transitions.size() > 0){	
 			self.getAPath(ini, int, pack);
+		}
 		thisModule.collabTest.ownedBehavior <- thisModule.collabTest.ownedBehavior->including(int);
+	}
+}
+
+rule createOpaqueExpressionIsIn(tra: UML2!Transition, m:UML2!Message, msg: String){
+	to sl: UML2!OpaqueExpression
+		--body <- tra.target.name)
+	
+	do{
+		if (msg = 'INI')
+			sl.body <- 'INITIAL';
+		else sl.body <- tra.source.name;
+--		else sl.body <- tra.source.name;
+		m.argument <- sl;
+	}
+}
+
+rule createOpaqueExpressionIsIn_2(tra: UML2!Transition, m:UML2!Message, msg: String){
+	to sl: UML2!OpaqueExpression
+		--body <- tra.target.name)
+	
+	do{
+		if (msg = 'INI')
+			sl.body <- 'INITIAL';
+		else sl.body <- tra.target.name;
+--		else sl.body <- tra.source.name;
+		m.argument <- sl;
+	}
+}
+
+rule createOpaqueExpression(tra: UML2!Transition, m:UML2!Message, msg: String){
+	to sl: UML2!OpaqueExpression
+		--body <- tra.target.name)
+	
+	do{
+		if (msg = 'INI')
+			sl.body <- 'INITIAL';
+		else sl.body <- tra.source.name;
+		m.argument <- sl;
 	}
 }
 
@@ -712,6 +837,8 @@ rule getAPath(trans: UML2!Transition, int: UML2!Interaction, pack: UML2!Package)
 	
 		op: UML!Transition = '';
 		next: UML2!Transition = '';
+		
+		opIsIn: UML2!Operation = UML2!Operation->allInstances()->select(o | o.name = 'isInState')->first();
 	}
 	to m: UML2!Message(
 		sendEvent <- mos1,
@@ -726,22 +853,61 @@ rule getAPath(trans: UML2!Transition, int: UML2!Interaction, pack: UML2!Package)
 	mos2: UML2!MessageOccurrenceSpecification( 
 		covered <- lfSut,
 		message <- m
+	),
+	
+	min: UML2!Message(
+		sendEvent <- mis1,
+		receiveEvent <- mis2),
+	
+	mis1: UML2!MessageOccurrenceSpecification( 
+		covered <- lfCtx,
+		message <- min
+	),
+	
+	mis2: UML2!MessageOccurrenceSpecification( 
+		covered <- lfSut,
+		message <- min,
+		event <- ceis
+	),
+	
+	ceis: UML2!CallEvent(
+		operation <- opIsIn
+	),
+	
+	mR: UML2!Message(
+		sendEvent <- mR1,
+		receiveEvent <- mR2,
+		name <- 'true',
+		messageSort <- #reply), --UML2!MessageSort.getByName('Reply'),
+	
+	mR1: UML2!MessageOccurrenceSpecification( 
+		covered <- lfSut,
+		message <- mR
+	),
+	
+	mR2: UML2!MessageOccurrenceSpecification( 
+		covered <- lfCtx,
+		message <- mR,
+		event <- ceR
+	),
+	
+	ceR: UML2!CallEvent(
+		--operation <- opIsIn
 	)
 	
 	do{
 		next <- thisModule.transitions->select(t | t.source.name = trans.target.name)->first();
-		if (next.oclIsUndefined() = false){
-			'IF'.println();
-			thisModule.transitions <- thisModule.transitions->excluding(trans);
-			int.fragment <- int.fragment->append(mos1)->append(mos2);
-			int.message <- int.message->including(m);
+		self.createOpaqueExpressionIsIn_2(trans, min, '');
+		
+		thisModule.transitions <- thisModule.transitions->excluding(trans);
+		int.fragment <- int.fragment->including(mos1)->including(mos2)->append(mis1)->append(mis2)->append(mR1)->append(mR2);
+		int.message <- int.message->including(m)->including(min)->including(mR);
+			
+		if (next.oclIsUndefined() = false){			
 			self.getAPath(next, int, pack);
 		}else{
-			'ELSE'.println();
-			thisModule.transitions <- thisModule.transitions->excluding(trans);
-			int.fragment <- int.fragment->append(mos1)->append(mos2);
-			int.message <- int.message->including(m);
-			self.generate(thisModule.transitions->first(), pack);
+			if (thisModule.transitions->size()>0)
+				self.generate(thisModule.transitions->first(), pack);
 		}
 		
 		if (trans.getTriggers().size() > 0){ --->first().event.oclIsUndefined() = false){
