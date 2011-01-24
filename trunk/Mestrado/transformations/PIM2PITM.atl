@@ -36,16 +36,7 @@ helper def : transitions : Set(UML2!Transition) = Set{};
 
 helper def : collabTest : UML2!Collaboration = '';
 
-
 helper def : numberTC : Integer = 1;
-
-helper def : numberEvents : Integer = 0;
-
-helper def: IFs: Integer = 0;
-
-helper def: interaction: UML2!Interaction = '';
-
-helper def: parameters: Set(String) = Set{};
 
 helper def: isInOperator: Boolean = false;
 
@@ -84,7 +75,7 @@ rule createTestPackage(){
 		self.createScheduler(tPack);
 		self.createTimer(tPack);
 		self.createTestContext(tPack);
-		--UML2!StateMachine->allInstancesFrom('IN')->first().toString().println();
+		
 		self.testCaseGeneration(UML2!StateMachine->allInstances()->select(s | s.name = 'Teste 2')->first(), tPack);
 		 
 	}	
@@ -675,15 +666,29 @@ rule testCaseGeneration (sm: UML2!StateMachine, pack: UML2!Package){
 	}
 	to 
 	col: UML2!Collaboration(
-		ownedBehavior <- Set{}
+		ownedBehavior <- Set{},
+		name <- 'TestCases'
 	)
 	
 	do{
-		trans->collect(s | s.source).toString().println();
-		trans->collect(s | s.target).toString().println();
 		thisModule.transitions <- trans;
 		thisModule.collabTest <- col;
 		self.generate(transBeg, pack);
+		pack.packagedElement <- pack.packagedElement->including(col);
+		for (tc in col.ownedBehavior){
+			tc.toString().println();
+			self.createOperationInTContext(tc.name);
+			--thisModule.TContext.ownedOperation <- 
+		}	
+	}
+}
+
+rule createOperationInTContext (name: String){
+	to op: UML2!Operation(
+		name <- name)
+		
+	do{
+		thisModule.TContext.ownedOperation <- thisModule.TContext.ownedOperation->including(op);
 	}
 }
 	
@@ -874,25 +879,17 @@ rule getAPath(trans: UML2!Transition, int: UML2!Interaction, pack: UML2!Package,
 		
 		thisModule.transitions <- thisModule.transitions->excluding(trans);
 		if (thisModule.isInOperator = true){
-			'IF'.println();
 			opr.fragment <- opr.fragment->including(mos1)->including(mos2)->append(mis1)->append(mis2)->append(mR1)->append(mR2);
 		}else{ 
 			int.fragment <- int.fragment->including(mos1)->including(mos2)->append(mis1)->append(mis2)->append(mR1)->append(mR2);
-			'ELSE'.println();
 		}
 		int.message <- int.message->including(m)->including(min)->including(mR);
 			
 		if (next.oclIsUndefined() = false){			
 			if (next.getGuard().oclIsUndefined() = false){
-				'TEM GUARDA'.println();
-				next.source.toString().println();
-				next.target.toString().println();
 				self.generate(next, pack);
 			}
 			else{
-				'NAO TEM GUARDA'.println();
-				next.source.toString().println();
-				next.target.toString().println();
 				self.getAPath(next, int, pack, thisModule.Operator);
 			}
 		}else{
