@@ -37,7 +37,7 @@ helper def : transitions : Set(UML2!Transition) = Set{};
 helper def : collabTest : UML2!Collaboration = '';
 
 
-helper def : numberTC : Integer = 0;
+helper def : numberTC : Integer = 1;
 
 helper def : numberEvents : Integer = 0;
 
@@ -46,6 +46,10 @@ helper def: IFs: Integer = 0;
 helper def: interaction: UML2!Interaction = '';
 
 helper def: parameters: Set(String) = Set{};
+
+helper def: isInOperator: Boolean = false;
+
+helper def: Operator: UML2!InteractionOperand = '';
 
 -- Rule witch start the generation process of the test architecture
 -- for that, it's necessary that exists in the input model one comment with the word 'start'
@@ -692,8 +696,8 @@ rule generate(ini: UML2!Transition, pack: UML2!Package){
 	to
 	int: UML2!Interaction(
 		lifeline <- Set{llTx, llSut},
-		fragment <- Set{},--mos1, mos2, mis1, mis2},
-		message <- Set{},--mst, min},
+		fragment <- Set{},
+		message <- Set{},
 		name <- 'testCase'+ thisModule.numberTC.toString(),
 		ownedAttribute <- Set{propSut, propTx}
 	),
@@ -772,65 +776,35 @@ rule generate(ini: UML2!Transition, pack: UML2!Package){
 	)
 	
 	do{
-		opIsIn.toString().println();
-		int.fragment <- int.fragment->including(mos1)->including(mos2)->including(mis1)->including(mis2)->including(mR1)->including(mR2); 
+		--- Verifies if there is a guard. If it's true, then the messages will be included on a Combinated Fragment
+		thisModule.isInOperator <- false;
+		if (ini.getGuard().oclIsUndefined() = false){
+			self.createCombinedFragment(int, ini, OrderedSet{mos1, mos2, mis1, mis2, mR1, mR2});
+		}else
+			int.fragment <- int.fragment->including(mos1)->including(mos2)->including(mis1)->including(mis2)->including(mR1)->including(mR2); 
+		
 		int.message <- int.message->including(mst)->including(min)->including(mR);
 		thisModule.numberTC <- thisModule.numberTC + 1;
+		
+		--- If the transition has as source the Initial pseudostate
 		if (ini.source.oclIsKindOf(UML2!Pseudostate)){
-			'Entrou no IF'.println();
 			self.createOpaqueExpression(ini, mst, 'INI');
 			self.createOpaqueExpressionIsIn(ini, min, 'INI');
 		}else{
 			self.createOpaqueExpression(ini, mst, '');
 			self.createOpaqueExpressionIsIn(ini, min, '');
 		}
+		
+		--- Stop condition for the recursivity
 		if (thisModule.transitions.size() > 0){	
-			self.getAPath(ini, int, pack);
+			self.getAPath(ini, int, pack, thisModule.Operator);
 		}
 		thisModule.collabTest.ownedBehavior <- thisModule.collabTest.ownedBehavior->including(int);
 	}
 }
 
-rule createOpaqueExpressionIsIn(tra: UML2!Transition, m:UML2!Message, msg: String){
-	to sl: UML2!OpaqueExpression
-		--body <- tra.target.name)
-	
-	do{
-		if (msg = 'INI')
-			sl.body <- 'INITIAL';
-		else sl.body <- tra.source.name;
---		else sl.body <- tra.source.name;
-		m.argument <- sl;
-	}
-}
-
-rule createOpaqueExpressionIsIn_2(tra: UML2!Transition, m:UML2!Message, msg: String){
-	to sl: UML2!OpaqueExpression
-		--body <- tra.target.name)
-	
-	do{
-		if (msg = 'INI')
-			sl.body <- 'INITIAL';
-		else sl.body <- tra.target.name;
---		else sl.body <- tra.source.name;
-		m.argument <- sl;
-	}
-}
-
-rule createOpaqueExpression(tra: UML2!Transition, m:UML2!Message, msg: String){
-	to sl: UML2!OpaqueExpression
-		--body <- tra.target.name)
-	
-	do{
-		if (msg = 'INI')
-			sl.body <- 'INITIAL';
-		else sl.body <- tra.source.name;
-		m.argument <- sl;
-	}
-}
-
-
-rule getAPath(trans: UML2!Transition, int: UML2!Interaction, pack: UML2!Package){
+--- Rule that returns a path from the state machine diagram through its transitions (recursive rule) 
+rule getAPath(trans: UML2!Transition, int: UML2!Interaction, pack: UML2!Package, opr: UML2!InteractionOperand){
 	using{
 		lfSut : UML2!Lifeline = int.lifeline->select(l | l.represents.type.name = thisModule.SubSUT.name)->first();
 		lfCtx : UML2!Lifeline = int.lifeline->select(l | l.represents.type.name = thisModule.TContext.name)->first();
@@ -878,7 +852,7 @@ rule getAPath(trans: UML2!Transition, int: UML2!Interaction, pack: UML2!Package)
 		sendEvent <- mR1,
 		receiveEvent <- mR2,
 		name <- 'true',
-		messageSort <- #reply), --UML2!MessageSort.getByName('Reply'),
+		messageSort <- #reply),
 	
 	mR1: UML2!MessageOccurrenceSpecification( 
 		covered <- lfSut,
@@ -892,7 +866,6 @@ rule getAPath(trans: UML2!Transition, int: UML2!Interaction, pack: UML2!Package)
 	),
 	
 	ceR: UML2!CallEvent(
-		--operation <- opIsIn
 	)
 	
 	do{
@@ -900,20 +873,96 @@ rule getAPath(trans: UML2!Transition, int: UML2!Interaction, pack: UML2!Package)
 		self.createOpaqueExpressionIsIn_2(trans, min, '');
 		
 		thisModule.transitions <- thisModule.transitions->excluding(trans);
-		int.fragment <- int.fragment->including(mos1)->including(mos2)->append(mis1)->append(mis2)->append(mR1)->append(mR2);
+		if (thisModule.isInOperator = true){
+			'IF'.println();
+			opr.fragment <- opr.fragment->including(mos1)->including(mos2)->append(mis1)->append(mis2)->append(mR1)->append(mR2);
+		}else{ 
+			int.fragment <- int.fragment->including(mos1)->including(mos2)->append(mis1)->append(mis2)->append(mR1)->append(mR2);
+			'ELSE'.println();
+		}
 		int.message <- int.message->including(m)->including(min)->including(mR);
 			
 		if (next.oclIsUndefined() = false){			
-			self.getAPath(next, int, pack);
+			if (next.getGuard().oclIsUndefined() = false){
+				'TEM GUARDA'.println();
+				next.source.toString().println();
+				next.target.toString().println();
+				self.generate(next, pack);
+			}
+			else{
+				'NAO TEM GUARDA'.println();
+				next.source.toString().println();
+				next.target.toString().println();
+				self.getAPath(next, int, pack, thisModule.Operator);
+			}
 		}else{
 			if (thisModule.transitions->size()>0)
 				self.generate(thisModule.transitions->first(), pack);
 		}
 		
-		if (trans.getTriggers().size() > 0){ --->first().event.oclIsUndefined() = false){
+		if (trans.getTriggers().size() > 0){ 
 			op <- trans.getTriggers()->first().event.operation;
 			self.createEvent(op, mos2);
 		}
+	}
+}
+
+--- Rule that create a Combined Fragment with the guard condition as an Opt fragment
+rule createCombinedFragment(int: UML2!Interaction, trans: UML!Transition, mos: Set(UML2!MessageOccurrenceSpecification)){
+	to cf: UML2!CombinedFragment(
+		interactionOperator <- #opt,
+		operand <- op),
+		
+	op: UML2!InteractionOperand(
+		fragment <- Set{},
+		guard <- gd),
+		
+	gd: UML2!InteractionConstraint(
+		specification <- ls),
+	
+	ls: UML2!LiteralString(
+		value <- trans.getGuard().specification.stringValue())
+		
+	do{
+		for (m in mos){
+			op.fragment <- op.fragment->append(m);
+		}
+		thisModule.Operator <- op;
+		thisModule.isInOperator <- true;
+		int.fragment <- int.fragment->including(cf); 
+	}
+}
+
+--- Rule that create the Opaque expression that refers to the operation IsInState
+rule createOpaqueExpressionIsIn(tra: UML2!Transition, m:UML2!Message, msg: String){
+	to sl: UML2!OpaqueExpression
+	
+	do{
+		if (msg = 'INI')
+			sl.body <- 'INITIAL';
+		else sl.body <- tra.source.name;
+		m.argument <- sl;
+	}
+}
+
+rule createOpaqueExpressionIsIn_2(tra: UML2!Transition, m:UML2!Message, msg: String){
+	to sl: UML2!OpaqueExpression
+	
+	do{
+		if (msg = 'INI')
+			sl.body <- 'INITIAL';
+		else sl.body <- tra.target.name;
+		m.argument <- sl;
+	}
+}
+
+rule createOpaqueExpression(tra: UML2!Transition, m:UML2!Message, msg: String){
+	to sl: UML2!OpaqueExpression
+	do{
+		if (msg = 'INI')
+			sl.body <- 'INITIAL';
+		else sl.body <- tra.source.name;
+		m.argument <- sl;
 	}
 }
 
