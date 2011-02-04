@@ -8,7 +8,7 @@
       <eClassifiers xsi:type="ecore:EClass" name="PrimitiveType" abstract="true" eSuperTypes="#/0/Types/Type"/>
       <eClassifiers xsi:type="ecore:EClass" name="CompositeType" abstract="true" eSuperTypes="#/0/Types/Type"/>
       <eClassifiers xsi:type="ecore:EClass" name="Char" eSuperTypes="#/0/Types/PrimitiveType"/>
-      <eClassifiers xsi:type="ecore:EClass" name="Int" eSuperTypes="#/0/Types/PrimitiveType"/>
+      <eClassifiers xsi:type="ecore:EClass" name="Int" eSuperTypes="#/0/Types/PrimitiveType #/0/Types/Array"/>
       <eClassifiers xsi:type="ecore:EClass" name="Float" eSuperTypes="#/0/Types/PrimitiveType"/>
       <eClassifiers xsi:type="ecore:EClass" name="Double" eSuperTypes="#/0/Types/PrimitiveType"/>
       <eClassifiers xsi:type="ecore:EClass" name="Short" eSuperTypes="#/0/Types/PrimitiveType"/>
@@ -17,7 +17,7 @@
       <eClassifiers xsi:type="ecore:EClass" name="Array" eSuperTypes="#/0/Types/CompositeType"/>
       <eClassifiers xsi:type="ecore:EClass" name="Struct" eSuperTypes="#/0/Types/CompositeType"/>
       <eClassifiers xsi:type="ecore:EClass" name="Enum" eSuperTypes="#/0/Types/CompositeType"/>
-      <eClassifiers xsi:type="ecore:EClass" name="Inherited" eSuperTypes="#/0/Types/Type #/0/Abstractions/NamedElement"/>
+      <eClassifiers xsi:type="ecore:EClass" name="FromHeader" eSuperTypes="#/0/Types/Type #/0/Abstractions/NamedElement"/>
     </eSubpackages>
     <eSubpackages name="Abstractions" nsURI="Abstractions" nsPrefix="Abstractions">
       <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
@@ -49,7 +49,7 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#/0/Main/Block"
             containment="true"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="ownedParameter" upperBound="-1"
-            eType="#/0/Declarations/VariableDeclaration" containment="true"/>
+            eType="#/0/Declarations/Declaration" containment="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="Block">
         <eStructuralFeatures xsi:type="ecore:EReference" name="element" upperBound="-1"
@@ -73,7 +73,8 @@
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" eType="#/0/Enumerations/ModifierKind"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="ConstantDeclaration" eSuperTypes="#/0/Declarations/Declaration">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="inicializer" eType="#/0/Expressions/Expression"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="initializer" eType="#/0/Expressions/Expression"
+            containment="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="CompilationDirectiveDeclaration"
           eSuperTypes="#/0/Declarations/Declaration">
@@ -88,7 +89,8 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#/0/Types/Type"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="fragment" upperBound="-1"
             eType="#/0/Declarations/FragmentVariableDeclaration" containment="true"/>
-        <eStructuralFeatures xsi:type="ecore:EReference" name="initializer" eType="#/0/Expressions/Expression"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="initializer" eType="#/0/Expressions/Expression"
+            containment="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="PrototypeFunctionDeclaration" eSuperTypes="#/0/Declarations/Declaration">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAPointer" eType="#/1/EBoolean"
@@ -148,9 +150,22 @@
             containment="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="SwitchCommand" eSuperTypes="#/0/Commands/DecisionCommand">
-        <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#/0/Expressions/Expression"/>
-        <eStructuralFeatures xsi:type="ecore:EReference" name="command" upperBound="-1"
-            eType="#/0/Commands/Command"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="variable" lowerBound="1"
+            eType="#/0/Expressions/VariableAccess" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="case" lowerBound="1"
+            upperBound="-1" eType="#/0/Commands/CaseOption" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="default" eType="#/0/Commands/DefaultOption"
+            containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="CaseOption">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="#/0/Expressions/Literal"
+            containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#/0/Main/Block"
+            containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="DefaultOption">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="body" eType="#/0/Main/Block"
+            containment="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="IterativeCommand" abstract="true"
           eSuperTypes="#/0/Commands/Command">
@@ -181,6 +196,8 @@
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="CastExpression" eSuperTypes="#/0/Expressions/Expression">
         <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#/0/Types/Type"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#/0/Expressions/Expression"
+            containment="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="ArithmeticExpression" abstract="true"
           eSuperTypes="#/0/Expressions/Expression">
@@ -232,6 +249,9 @@
         <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#/0/Expressions/Expression"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="PointerVariableAccess" eSuperTypes="#/0/Expressions/VariableAccess"/>
+      <eClassifiers xsi:type="ecore:EClass" name="PrototypeAccess" eSuperTypes="#/0/Expressions/Access">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="prototype" eType="#/0/Declarations/PrototypeFunctionDeclaration"/>
+      </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="Literal" abstract="true" eSuperTypes="#/0/Expressions/Expression"/>
       <eClassifiers xsi:type="ecore:EClass" name="CharLiteral" eSuperTypes="#/0/Expressions/Literal">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="#/1/ECharacter"/>
