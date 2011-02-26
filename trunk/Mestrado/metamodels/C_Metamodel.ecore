@@ -34,13 +34,19 @@
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" lowerBound="1"
             eType="#/1/EString"/>
         <eStructuralFeatures xsi:type="ecore:EReference" name="file" lowerBound="1"
-            upperBound="-1" eType="#/0/Main/C_Unit" containment="true"/>
+            upperBound="-1" eType="#/0/Main/Unit" containment="true"/>
       </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="C_Unit" eSuperTypes="#/0/Abstractions/NamedElement">
+      <eClassifiers xsi:type="ecore:EClass" name="Unit" abstract="true" eSuperTypes="#/0/Abstractions/NamedElement">
         <eStructuralFeatures xsi:type="ecore:EReference" name="comment" upperBound="-1"
             eType="#/0/Main/Comment"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="C_Unit" eSuperTypes="#/0/Main/Unit">
         <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
             eType="#/0/Main/Element" containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="H_Unit" eSuperTypes="#/0/Main/Unit">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="declaration" upperBound="-1"
+            eType="#/0/Main/DeclarationsBlock" containment="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="Function" eSuperTypes="#/0/Main/Element">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="modifier" eType="#/0/Enumerations/ModifierKind"/>
@@ -62,6 +68,9 @@
       <eClassifiers xsi:type="ecore:EClass" name="DeclarationsBlock" eSuperTypes="#/0/Main/Element">
         <eStructuralFeatures xsi:type="ecore:EReference" name="declaration" upperBound="-1"
             eType="#/0/Declarations/Declaration" containment="true"/>
+        <eStructuralFeatures xsi:type="ecore:EReference" name="directive" upperBound="-1"
+            eType="#/0/CompilationDirectiveDeclarations/CompilationDirectiveDeclaration"
+            containment="true"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="FunctionsBlock" eSuperTypes="#/0/Main/Element">
         <eStructuralFeatures xsi:type="ecore:EReference" name="function" upperBound="-1"
@@ -75,10 +84,6 @@
       <eClassifiers xsi:type="ecore:EClass" name="ConstantDeclaration" eSuperTypes="#/0/Declarations/Declaration">
         <eStructuralFeatures xsi:type="ecore:EReference" name="initializer" eType="#/0/Expressions/Expression"
             containment="true"/>
-      </eClassifiers>
-      <eClassifiers xsi:type="ecore:EClass" name="CompilationDirectiveDeclaration"
-          eSuperTypes="#/0/Declarations/Declaration">
-        <eStructuralFeatures xsi:type="ecore:EAttribute" name="kind" eType="#/0/Enumerations/CompilationDiretiveKind"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EClass" name="VariableDeclaration" eSuperTypes="#/0/Declarations/Declaration">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="isAPointer" eType="#/1/EBoolean"
@@ -119,6 +124,35 @@
       <eClassifiers xsi:type="ecore:EClass" name="TypeDefDeclaration" eSuperTypes="#/0/Declarations/CompositeVariableDeclaration">
         <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#/0/Types/Type"/>
       </eClassifiers>
+    </eSubpackages>
+    <eSubpackages name="CompilationDirectiveDeclarations" nsURI="CompilationDirectiveDeclarations"
+        nsPrefix="CompilationDirectiveDeclarations">
+      <eClassifiers xsi:type="ecore:EClass" name="CompilationDirectiveDeclaration"
+          abstract="true">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="declaration" upperBound="-1"
+            eType="#/0/Declarations/Declaration" containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="SimpleDirectiveDeclaration" abstract="true"
+          eSuperTypes="#/0/CompilationDirectiveDeclarations/CompilationDirectiveDeclaration #/0/Abstractions/NamedElement"/>
+      <eClassifiers xsi:type="ecore:EClass" name="ComplexDirectiveDeclaration" abstract="true"
+          eSuperTypes="#/0/CompilationDirectiveDeclarations/CompilationDirectiveDeclaration"/>
+      <eClassifiers xsi:type="ecore:EClass" name="Define" eSuperTypes="#/0/CompilationDirectiveDeclarations/SimpleDirectiveDeclaration">
+        <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="#/1/EString"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="Include" eSuperTypes="#/0/CompilationDirectiveDeclarations/SimpleDirectiveDeclaration"/>
+      <eClassifiers xsi:type="ecore:EClass" name="Ifdef" eSuperTypes="#/0/CompilationDirectiveDeclarations/ComplexDirectiveDeclaration #/0/Abstractions/NamedElement">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="end" eType="#/0/CompilationDirectiveDeclarations/Endif"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="Ifndef" eSuperTypes="#/0/CompilationDirectiveDeclarations/ComplexDirectiveDeclaration">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="end" eType="#/0/CompilationDirectiveDeclarations/Endif"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="ElseDirective" eSuperTypes="#/0/CompilationDirectiveDeclarations/ComplexDirectiveDeclaration"/>
+      <eClassifiers xsi:type="ecore:EClass" name="IfDirective" eSuperTypes="#/0/CompilationDirectiveDeclarations/ComplexDirectiveDeclaration">
+        <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#/0/Expressions/ConstantExpression"
+            containment="true"/>
+      </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="Elif" eSuperTypes="#/0/CompilationDirectiveDeclarations/IfDirective"/>
+      <eClassifiers xsi:type="ecore:EClass" name="Endif"/>
     </eSubpackages>
     <eSubpackages name="Commands" nsURI="Commands" nsPrefix="Commands">
       <eClassifiers xsi:type="ecore:EClass" name="Command" abstract="true" eSuperTypes="#/0/Abstractions/BlockedElement"/>
@@ -271,6 +305,7 @@
       <eClassifiers xsi:type="ecore:EClass" name="ShortLiteral" eSuperTypes="#/0/Expressions/Literal">
         <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
       </eClassifiers>
+      <eClassifiers xsi:type="ecore:EClass" name="ConstantExpression" eSuperTypes="#/0/Expressions/Expression"/>
     </eSubpackages>
     <eSubpackages name="Sequencers" nsURI="Sequencers" nsPrefix="Sequencers">
       <eClassifiers xsi:type="ecore:EClass" name="Sequencer" abstract="true" eSuperTypes="#/0/Abstractions/BlockedElement"/>
@@ -285,11 +320,6 @@
         <eLiterals name="static" value="1"/>
         <eLiterals name="volatile" value="2"/>
         <eLiterals name="register" value="3"/>
-      </eClassifiers>
-      <eClassifiers xsi:type="ecore:EEnum" name="CompilationDiretiveKind">
-        <eLiterals name="include"/>
-        <eLiterals name="define" value="1"/>
-        <eLiterals name="undef" value="2"/>
       </eClassifiers>
       <eClassifiers xsi:type="ecore:EEnum" name="UnaryOperatorKind">
         <eLiterals name="MINUS"/>
