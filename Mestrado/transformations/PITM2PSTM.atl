@@ -43,6 +43,8 @@ rule pack {
 		self.TDFile();
 		self.TestCaseFile();
 		self.SUTInterfaceFile();
+		
+		self.createHFiles(testProg);
 	}
 }
 
@@ -91,32 +93,27 @@ rule createCFiles(prog: C!Program){
 rule mainFile(){
 	to db: C!DeclarationsBlock(
 		name <- 'includes',
-		declaration <- OrderedSet{stH, FRTOSH, TDH, SUTH, AEUH, AETH}),
+		directive <- OrderedSet{stH, FRTOSH, TDH, SUTH, AEUH, AETH}),
 	
-	stH: C!CompilationDirectiveDeclaration(
-		name <- '<stdio.h>',
-		kind <- #include),
+	stH: C!Include(
+		name <- '<stdio.h>'),
 	
-	FRTOSH: C!CompilationDirectiveDeclaration(
-		name <- '"FreeRTOS.h"',
-		kind <- #include),
+	FRTOSH: C!Include(
+		name <- '"FreeRTOS.h"'),
 	
-	TDH: C!CompilationDirectiveDeclaration(
-		name <- '"TestDriver.h"',
-		kind <- #include),
+	TDH: C!Include(
+		name <- '"TestDriver.h"'),
 	
 	--- the .h file related to the SUT
-	SUTH: C!CompilationDirectiveDeclaration(
-		name <- '"alarme.h"',
-		kind <- #include),
+	SUTH: C!Include(
+		name <- '"alarme.h"'),
+		
 	--- the .h file related to the testing API
-	AEUH: C!CompilationDirectiveDeclaration(
-		name <- '"ActualEventUtil.h"',
-		kind <- #include),
+	AEUH: C!Include(
+		name <- '"ActualEventUtil.h"'),
 	
-	AETH: C!CompilationDirectiveDeclaration(
-		name <- '"ActualEventTester.h"',
-		kind <- #include),
+	AETH: C!Include(
+		name <- '"ActualEventTester.h"'),
 		
 	mainFunc: C!Function(
 		name <- 'main',
@@ -153,61 +150,50 @@ rule mainFile(){
 rule TDFile(){
 	to db: C!DeclarationsBlock(
 		name <- 'includes',
-		declaration <- OrderedSet{stH, stlH, strH, FRTOSH, tskH, semH}), 
+		directive <- OrderedSet{stH, stlH, strH, FRTOSH, tskH, semH}), 
 	
-	stH: C!CompilationDirectiveDeclaration(
-		name <- '<stdio.h>',
-		kind <- #include),
+	stH: C!Include(
+		name <- '<stdio.h>'),
 		
-	stlH: C!CompilationDirectiveDeclaration(
-		name <- '<stdlib.h>',
-		kind <- #include),
+	stlH: C!Include(
+		name <- '<stdlib.h>'),
 		
-	strH: C!CompilationDirectiveDeclaration(
-		name <- '<string.h>',
-		kind <- #include),
+	strH: C!Include(
+		name <- '<string.h>'),
 	
-	FRTOSH: C!CompilationDirectiveDeclaration(
-		name <- '"FreeRTOS.h"',
-		kind <- #include),
+	FRTOSH: C!Include(
+		name <- '"FreeRTOS.h"'),
 	
-	tskH: C!CompilationDirectiveDeclaration(
-		name <- '"task.h"',
-		kind <- #include),
+	tskH: C!Include(
+		name <- '"task.h"'),
 		
-	semH: C!CompilationDirectiveDeclaration(
-		name <- '"semphr.h"',
-		kind <- #include),
+	semH: C!Include(
+		name <- '"semphr.h"'),
 			
 	--- the .h file related to the testing API
 	db2: C!DeclarationsBlock(
 		name <- 'includes testing API',
-		declaration <- OrderedSet{AEUH, AETH}),
+		directive <- OrderedSet{AEUH, AETH}),
 	
-	AEUH: C!CompilationDirectiveDeclaration(
-		name <- '"ActualEventUtil.h"',
-		kind <- #include),
+	AEUH: C!Include(
+		name <- '"ActualEventUtil.h"'),
 	
-	AETH: C!CompilationDirectiveDeclaration(
-		name <- '"ActualEventTester.h"',
-		kind <- #include),
+	AETH: C!Include(
+		name <- '"ActualEventTester.h"'),
 		
 	--- the .h file related to the test execution API
 	db3: C!DeclarationsBlock(
 		name <- 'includes testing execution API',
-		declaration <- OrderedSet{SUTIntH, TCH, TDH}),
+		directive <- OrderedSet{SUTIntH, TCH, TDH}),
 	
-	SUTIntH: C!CompilationDirectiveDeclaration(
-		name <- '"SUTInterface.h"',
-		kind <- #include),
+	SUTIntH: C!Include(
+		name <- '"SUTInterface.h"'),
 	
-	TCH: C!CompilationDirectiveDeclaration(
-		name <- '"TestCase.h"',
-		kind <- #include),
+	TCH: C!Include(
+		name <- '"TestCase.h"'),
 		
-	TDH: C!CompilationDirectiveDeclaration(
-		name <- '"TestDriver.h"',
-		kind <- #include),
+	TDH: C!Include(
+		name <- '"TestDriver.h"'),
 	
 	--- Function prototypes ---
 	db4: C!DeclarationsBlock(
@@ -634,7 +620,7 @@ rule createTestContextTaskStuffs(){
 	pvP: C!SimpleVariableDeclaration(
 		name <- 'pvParameters',
 		isAPointer <- true,
-		type <- thisModule.voidType),
+		type <- thisModule.voidType), 
 		
 	tcBlock: C!Block(
 		element <- Set{})
@@ -985,55 +971,46 @@ rule createCaseFromState(switch: C!SwitchCommand){
 rule TestCaseFile(){
 	to db: C!DeclarationsBlock(
 		name <- 'includes',
-		declaration <- OrderedSet{stH, stlH}),
+		directive <- OrderedSet{stH, stlH}),
 			
-	stH: C!CompilationDirectiveDeclaration(
-		name <- '<stdio.h>',
-		kind <- #include),
+	stH: C!Include(
+		name <- '<stdio.h>'),
 		
-	stlH: C!CompilationDirectiveDeclaration(
-		name <- '<stdlib.h>',
-		kind <- #include),
+	stlH: C!Include(
+		name <- '<stdlib.h>'),
 		
 	db1: C!DeclarationsBlock(
 		name <- 'includes SO API',
-		declaration <- OrderedSet{freeH, taskH}),
+		directive <- OrderedSet{freeH, taskH}),
 			
-	freeH: C!CompilationDirectiveDeclaration(
-		name <- '"FreeRTOS.h"',
-		kind <- #include),
+	freeH: C!Include(
+		name <- '"FreeRTOS.h"'),
 		
-	taskH: C!CompilationDirectiveDeclaration(
-		name <- '"task.h"',
-		kind <- #include),
+	taskH: C!Include(
+		name <- '"task.h"'),
 	
 	db2: C!DeclarationsBlock(
 		name <- 'includes Testing API',
-		declaration <- OrderedSet{aeuH, aetH}),
+		directive <- OrderedSet{aeuH, aetH}),
 			
-	aeuH: C!CompilationDirectiveDeclaration(
-		name <- '"ActualEventUtil.h"',
-		kind <- #include),
+	aeuH: C!Include(
+		name <- '"ActualEventUtil.h"'),
 		
-	aetH: C!CompilationDirectiveDeclaration(
-		name <- '"ActualEventTester.h"',
-		kind <- #include),
+	aetH: C!Include(
+		name <- '"ActualEventTester.h"'),
 		
 	db3: C!DeclarationsBlock(
 		name <- 'includes Test execution API',
-		declaration <- OrderedSet{SUTIntH, TDH, TCH}),
+		directive <- OrderedSet{SUTIntH, TDH, TCH}),
 			
-	SUTIntH: C!CompilationDirectiveDeclaration(
-		name <- '"SUTInterface.h"',
-		kind <- #include),
+	SUTIntH: C!Include(
+		name <- '"SUTInterface.h"'),
 		
-	TDH: C!CompilationDirectiveDeclaration(
-		name <- '"TestDriver.h"',
-		kind <- #include),
+	TDH: C!Include(
+		name <- '"TestDriver.h"'),
 	
-	TCH: C!CompilationDirectiveDeclaration(
-		name <- '"TestCase.h"',
-		kind <- #include)
+	TCH: C!Include(
+		name <- '"TestCase.h"')
 		
 	do{
 		thisModule.TCFile.elements <- thisModule.TCFile.elements->including(db)->including(db1)->including(db2)->including(db3);
@@ -1115,63 +1092,53 @@ rule createVTestCase(){
 rule SUTInterfaceFile(){
 	to db: C!DeclarationsBlock(
 		name <- 'includes',
-		declaration <- OrderedSet{stH, stlH}),
+		directive <- OrderedSet{stH, stlH}),
 			
-	stH: C!CompilationDirectiveDeclaration(
-		name <- '<stdio.h>',
-		kind <- #include),
+	stH: C!Include(
+		name <- '<stdio.h>'),
 		
-	stlH: C!CompilationDirectiveDeclaration(
-		name <- '<stdlib.h>',
-		kind <- #include),
+	stlH: C!Include(
+		name <- '<stdlib.h>'),
 		
 	db1: C!DeclarationsBlock(
 		name <- 'includes SO API',
-		declaration <- OrderedSet{freeH, taskH}),
+		directive <- OrderedSet{freeH, taskH}),
 			
-	freeH: C!CompilationDirectiveDeclaration(
-		name <- '"FreeRTOS.h"',
-		kind <- #include),
+	freeH: C!Include(
+		name <- '"FreeRTOS.h"'),
 		
-	taskH: C!CompilationDirectiveDeclaration(
-		name <- '"task.h"',
-		kind <- #include),
+	taskH: C!Include(
+		name <- '"task.h"'),
 	
 	db2: C!DeclarationsBlock(
 		name <- 'includes Testing API',
-		declaration <- OrderedSet{aeuH, aetH}),
+		directive <- OrderedSet{aeuH, aetH}),
 			
-	aeuH: C!CompilationDirectiveDeclaration(
-		name <- '"ActualEventUtil.h"',
-		kind <- #include),
+	aeuH: C!Include(
+		name <- '"ActualEventUtil.h"'),
 		
-	aetH: C!CompilationDirectiveDeclaration(
-		name <- '"ActualEventTester.h"',
-		kind <- #include),
+	aetH: C!Include(
+		name <- '"ActualEventTester.h"'),
 		
 	db3: C!DeclarationsBlock(
 		name <- 'includes Test execution API',
 		declaration <- OrderedSet{SUTIntH, TDH, TCH}),
 			
-	SUTIntH: C!CompilationDirectiveDeclaration(
-		name <- '"SUTInterface.h"',
-		kind <- #include),
+	SUTIntH: C!Include(
+		name <- '"SUTInterface.h"'),
 		
-	TDH: C!CompilationDirectiveDeclaration(
-		name <- '"TestDriver.h"',
-		kind <- #include),
+	TDH: C!Include(
+		name <- '"TestDriver.h"'),
 	
-	TCH: C!CompilationDirectiveDeclaration(
-		name <- '"TestCase.h"',
-		kind <- #include),
+	TCH: C!Include(
+		name <- '"TestCase.h"'),
 		
 	db4: C!DeclarationsBlock(
 		name <- 'includes Test execution API',
-		declaration <- OrderedSet{SUTH}),
+		directive <- OrderedSet{SUTH}),
 			
-	SUTH: C!CompilationDirectiveDeclaration(
-		name <- '"SUT.h"',
-		kind <- #include),
+	SUTH: C!Include(
+		name <- '"SUT.h"'),
 		
 	fb: C!FunctionsBlock(
 		name <- 'TEST CONTEXT',
@@ -1214,5 +1181,189 @@ rule SUTInterfaceFile(){
 	do{
 		thisModule.SUTIntFile.elements <- thisModule.SUTIntFile.elements->including(db)->including(db1)->including(db2)->including(db3)->including(db4)->including(fb);
 		
+	}
+}
+
+
+---------------------------------- .h Files -----------------------------------------
+rule createHFiles(prog: C!Program){
+	to TCH: C!H_Unit(
+		name <- 'TestCase'),
+	
+	SUTIntH: C!H_Unit(
+		name <- 'SUTInterface'),
+	
+	TDH: C!H_Unit(
+		name <- 'TestDriver')
+	
+	do{
+		self.createTCH(TCH);
+		self.createSUTIntH(SUTIntH);
+		self.createTDH(TDH);
+		prog.file <-prog.file->including(TCH)->including(SUTIntH)->including(TDH); 
+	}
+}
+
+rule createTCH(tc: C!H_Unit){
+	to id: C!Ifdef(
+		name <- 'TESTCASE_H_INCLUDED',
+		declaration <- OrderedSet{deftc, vtc, end},
+		end <- end),
+		
+	deftc: C!Define(
+		name <- 'TESTCASE_H_INCLUDED'),
+		
+	vtc: C!PrototypeFunctionDeclaration(
+		name <- 'vTestCase',
+		type <- thisModule.voidType,
+		ownedParameter <- OrderedSet{tcf, lf}),
+		
+	tcf: C!SimpleVariableDeclaration(
+		name <- 'testCaseFile',
+		isAPointer <- true,
+		type <- thisModule.charType),
+	
+	lf: C!SimpleVariableDeclaration(
+		name <- 'logFile',
+		isAPointer <- true,
+		type <- thisModule.charType),
+		
+	end: C!Endif
+	
+	do{
+		tc.declaration <- tc.declaration->including(id); 
+	}
+}
+
+rule createSUTIntH(tc: C!H_Unit){
+	to id: C!Ifdef(
+		name <- 'SUT_INTERFACE_H_INCLUDED',
+		declaration <- OrderedSet{defsi, tcp, tss, umsfq, stcp, gnp, css, end},
+		end <- end),
+		
+	defsi: C!Define(
+		name <- 'SUT_INTERFACE_H_INCLUDED'),
+		
+	tcp: C!Define(
+		name <- 'TEST_CONTEXT_PRIORITY',
+		value <- 'tskIDLE_PRIORITY + 5'),
+	
+	tss: C!Define(
+		name <- 'TEST_STACK_SIZE',
+		value <- '( ( unsigned portSHORT ) configMINIMAL_STACK_SIZE * 2)'),
+		
+	umsfq: C!Define(
+		name <- 'utpMAX_SIZE_FLOW_QUEUE',
+		value <- '15'),
+		
+	stcp: C!PrototypeFunctionDeclaration(
+		name <- 'vSetTestContextPriority',
+		ownedParameter <- OrderedSet{prio},
+		type <- thisModule.voidType),
+		
+	prio: C!SimpleVariableDeclaration(
+		name <- 'priority',
+		type <- thisModule.intType),
+		
+	gnp: C!PrototypeFunctionDeclaration(
+		name <- 'getNextPriority',
+		type <- thisModule.intType),
+		
+	css: C!PrototypeFunctionDeclaration(
+		name <- 'createSUTStructures',
+		type <- thisModule.voidType),
+		
+	end: C!Endif
+	
+	do{
+		tc.declaration <- tc.declaration->including(id); 
+	}
+	
+}
+
+rule createTDH(td: C!H_Unit){
+	to id: C!Ifdef(
+		name <- 'TESTDRIVER_H_INCLUDED',
+		declaration <- OrderedSet{deftc, vst, vtcx, vstp, vs, xa, dp, end},
+		end <- end),
+		
+	deftc: C!Define(
+		name <- 'TESTDRIVER_H_INCLUDED'),
+		
+	vst: C!PrototypeFunctionDeclaration(
+		name <- 'vStartTest',
+		type <- thisModule.voidType),
+		
+	vtcx: C!PrototypeFunctionDeclaration(
+		name <- 'vTestContext',
+		type <- thisModule.voidType,
+		ownedParameter <- OrderedSet{pv}),
+		
+	pv: C!SimpleVariableDeclaration(
+		name <- 'pvParameters',
+		isAPointer <- true,
+		type <- thisModule.voidType),
+		
+	vstp: C!PrototypeFunctionDeclaration(
+		name <- 'vSetTestContextPriority',
+		type <- thisModule.voidType,
+		ownedParameter <- OrderedSet{num}),
+		
+	num: C!SimpleVariableDeclaration(
+		name <- 'number',
+		type <- thisModule.intType),
+		
+	vs: C!PrototypeFunctionDeclaration(
+		name <- 'vScheduler',
+		type <- thisModule.voidType,
+		ownedParameter <- OrderedSet{tcf}),
+		
+	tcf: C!SimpleVariableDeclaration(
+		name <- 'testCaseFile',
+		isAPointer <- true,
+		type <- thisModule.charType),
+		
+	xa: C!PrototypeFunctionDeclaration(
+		name <- 'xArbiter',
+		type <- thisModule.intType,
+		ownedParameter <- OrderedSet{tcf2, lf}),
+		
+	tcf2: C!SimpleVariableDeclaration(
+		name <- 'testCaseFile',
+		isAPointer <- true,
+		type <- thisModule.charType),
+		
+	lf: C!SimpleVariableDeclaration(
+		name <- 'logFile',
+		isAPointer <- true,
+		type <- thisModule.charType),
+		
+	dp: C!PrototypeFunctionDeclaration(
+		name <- 'dequeuePriorityQueue',
+		type <- thisModule.intType),
+		
+	end: C!Endif
+	
+	do{
+		for (tcomp in thisModule.TComponents){
+			self.createTCSetStateProto(tcomp, id);
+		}
+		--id.end <- id.declaration->including(end);
+		td.declaration <- td.declaration->including(id); 
+	}
+}
+
+rule createTCSetStateProto(tcomp: UML2!Class, id: C!Ifdef){
+	to setState: C!PrototypeFunctionDeclaration(
+		name <- 'set'+tcomp.name+'Task_State',
+		type <- thisModule.voidType,
+		ownedParameter <- Set{nv}),
+		
+	nv: C!SimpleVariableDeclaration(
+		name <- 'newValue',
+		type <- thisModule.InheritedTypes->select(t | t.name = 'portSHORT')->first())
+		
+	do{
+		id.declaration <- id.declaration->including(setState); 	
 	}
 }
